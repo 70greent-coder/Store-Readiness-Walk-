@@ -155,7 +155,7 @@
       <div class="section-header"><h3 class="section-title">C. BEEF BOXES USED</h3><span id="boxCount" class="hint" style="margin:0"></span></div>
       <button class="btn primary" onclick="takePhoto()">📸 Take Photo of Box Label</button>
       <div class="btn-row">
-        <button class="btn secondary" onclick="startLiveScan()">🎥 Live Scan</button>
+        <button class="btn secondary" id="liveBtn" onclick="startLiveScan()">🎥 Live Scan</button>
         <button class="btn secondary" onclick="openBoxEditor(null, {})">⌨️ Type It In</button>
       </div>
       <p class="hint">Tip: hold the phone 6–10 inches from the label so the long barcode fills most of the photo, keep it sharp, and avoid glare.</p>
@@ -243,7 +243,7 @@
         </ul>
       </details>
     </div>
-    <div class="ver">Version 2.0 (camera fix) · works offline</div>
+    <div class="ver">Version 2.1 (camera fix) · works offline</div>
   </section>
 </main>
 
@@ -456,6 +456,9 @@ function findPrefix(gtin) {
    2) Bundled ZXing reader as a fallback (works offline).
    ===================================================================== */
 let nativeDetector = null;
+/* The live camera only works from a real https:// website. A file opened from
+   Downloads (content:// or file://) is always refused by Android Chrome. */
+const liveScanPossible = () => (location.protocol === 'https:' || location.hostname === 'localhost') && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 (async function initNative() {
   try {
     if ('BarcodeDetector' in window) {
@@ -638,17 +641,14 @@ function showBusy(on) { document.getElementById('busy').classList.toggle('hidden
 /* ---------- Live scan flow (needs https) ---------- */
 let stream = null, scanning = false;
 async function startLiveScan() {
-  if (!window.isSecureContext || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    alert('Live Scan needs the app to be opened from a secure https:// web address.\n\nYour phone opened this file from Downloads, so Android blocks the live camera here.\n\nUse “📸 Take Photo of Box Label” instead — it works right now.');
-    return;
-  }
+  if (!liveScanPossible()) { takePhoto(); return; } // opened from Downloads: use the regular camera instead
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
   } catch (e) {
     const name = e && e.name;
     let msg = 'The camera could not be opened (' + (name || 'error') + ').';
-    if (name === 'NotAllowedError') msg += '\n\nCamera permission is blocked. In Chrome: tap ⋮ → Settings → Site settings → Camera, and allow it for this page. Or use “📸 Take Photo of Box Label”.';
-    alert(msg); return;
+    if (name === 'NotAllowedError') msg += '\n\nCamera permission is blocked for this website. In Chrome: tap the icon left of the address → Permissions → Camera → Allow.';
+    alert(msg + '\n\nOpening the regular camera instead.'); takePhoto(); return;
   }
   const v = document.getElementById('video');
   v.srcObject = stream; await v.play().catch(() => {});
@@ -827,7 +827,9 @@ function saveLog(showMsg) {
 }
 function newLog() {
   if ((current.boxes.length || current.sanitation.length) && !current.savedAt && !confirm('This log has not been saved. Start a new one anyway?')) return;
-  current = blankLog(); persistCurrent(); fillHeader(); renderBoxes(); renderSanitation(); showTab('log');
+  current = blankLog(); persistCurrent(); // Hide Live Scan where it can never work, so employees aren't shown an error.
+if (!liveScanPossible()) { const lb = document.getElementById('liveBtn'); lb.parentNode.style.gridTemplateColumns = '1fr'; lb.remove(); }
+fillHeader(); renderBoxes(); renderSanitation(); showTab('log');
 }
 
 /* =====================================================================
@@ -847,7 +849,9 @@ function renderRecords() {
 function openRecord(id) {
   const l = load(KEY_LOGS, []).find(x => x.id === id); if (!l) return;
   if ((current.boxes.length || current.sanitation.length) && !current.savedAt && current.id !== id && !confirm('The current log has not been saved. Open this record anyway?')) return;
-  current = JSON.parse(JSON.stringify(l)); persistCurrent(); fillHeader(); renderBoxes(); renderSanitation(); showTab('log');
+  current = JSON.parse(JSON.stringify(l)); persistCurrent(); // Hide Live Scan where it can never work, so employees aren't shown an error.
+if (!liveScanPossible()) { const lb = document.getElementById('liveBtn'); lb.parentNode.style.gridTemplateColumns = '1fr'; lb.remove(); }
+fillHeader(); renderBoxes(); renderSanitation(); showTab('log');
 }
 function printRecord(id) { const l = load(KEY_LOGS, []).find(x => x.id === id); if (l) printLog(l); }
 function deleteRecord(id) {
@@ -955,7 +959,7 @@ function renderCamCheck() {
   const rows = [
     ['Page address', location.protocol === 'https:' ? 'Secure (https) ✅' : location.protocol.replace(':', '') + ' (opened from phone)'],
     ['📸 Take Photo', 'Available ✅'],
-    ['🎥 Live Scan', window.isSecureContext && navigator.mediaDevices && navigator.mediaDevices.getUserMedia ? 'Available ✅' : 'Not available here — needs https'],
+    ['🎥 Live Scan', liveScanPossible() ? 'Available ✅' : 'Off — only works from an https:// website (not needed)'],
     ['Phone barcode reader', nativeDetector ? 'Built-in Android reader ✅' : 'Using bundled reader'],
     ['Bundled reader', window.ZXing ? 'Loaded ✅' : 'Missing ❌'],
     ['Saving records', storageOK ? 'On this phone ✅' : 'Blocked ⚠️ — use Back Up']
@@ -973,6 +977,8 @@ function showTab(t) {
 }
 
 /* ---------- start ---------- */
+// Hide Live Scan where it can never work, so employees aren't shown an error.
+if (!liveScanPossible()) { const lb = document.getElementById('liveBtn'); lb.parentNode.style.gridTemplateColumns = '1fr'; lb.remove(); }
 fillHeader(); renderBoxes(); renderSanitation(); renderStatus(); renderRecords();
 if (!storageOK) document.getElementById('storageWarn').classList.remove('hidden');
 </script>
