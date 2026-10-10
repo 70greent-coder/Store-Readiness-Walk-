@@ -1,0 +1,481 @@
+<title>Rye Family Farm Microgreenz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a living tray up top (canvas sprouts on a soil line), then a scroll of
+   evidence — stat strip, study cards, a variety guide, kitchen ideas, sources. */
+:root {
+  --bg: #F2F6EE;        /* pale leaf-tinted ground */
+  --surface: #FFFFFF;
+  --ink: #13281A;       /* deep forest */
+  --muted: #4A6152;
+  --leaf: #3C9437;      /* chlorophyll */
+  --leaf-soft: #DCEBD5;
+  --stem: #C8175D;      /* radish / red-cabbage stem magenta: the pop */
+  --stem-soft: #F9DCE8;
+  --soil: #2A2016;
+  --line: #D3E0CE;
+  --on-accent: #FFFFFF;
+
+  --f-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --step--1: 0.85rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.3rem;
+  --step-2: 1.75rem;
+  --step-3: clamp(2rem, 4.5vw, 2.9rem);
+  --step-4: clamp(2.8rem, 8vw, 5.6rem);
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1811; --surface: #14231A; --ink: #E6F1E3; --muted: #A0B7A5;
+    --leaf: #7CCB69; --leaf-soft: #1D3424; --stem: #FF5D9E; --stem-soft: #3A1626;
+    --soil: #050A07; --line: #27402F; --on-accent: #1A0710;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1811; --surface: #14231A; --ink: #E6F1E3; --muted: #A0B7A5;
+  --leaf: #7CCB69; --leaf-soft: #1D3424; --stem: #FF5D9E; --stem-soft: #3A1626;
+  --soil: #050A07; --line: #27402F; --on-accent: #1A0710;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: var(--step-0); line-height: 1.6;
+  padding-inline: 16px;
+}
+.wrap { max-width: 1120px; margin-inline: auto; }
+h1, h2, h3 { font-family: var(--f-display); line-height: 1.02; margin: 0; text-wrap: balance; letter-spacing: -0.02em; }
+p { margin: 0; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--stem); outline-offset: 3px; border-radius: 6px; }
+.eyebrow {
+  font-family: var(--f-mono); font-size: var(--step--1); text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--stem); font-weight: 500;
+}
+.lede { color: var(--muted); max-width: 60ch; }
+
+/* ---------- Top bar ---------- */
+.bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 20px; flex-wrap: wrap; }
+.brand { font-family: var(--f-display); font-weight: 800; font-size: 1.25rem; letter-spacing: -0.01em; text-decoration: none; }
+.brand span { color: var(--leaf); }
+.bar nav { display: flex; gap: 20px; font-size: var(--step--1); flex-wrap: wrap; }
+.bar nav a { text-decoration: none; color: var(--muted); }
+.bar nav a:hover { color: var(--ink); }
+
+/* ---------- Hero ---------- */
+.hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 40px; align-items: end; padding-block: 24px 0; }
+.hero > * { min-width: 0; }
+.hero h1 { font-size: var(--step-4); font-weight: 800; margin-block: 14px 22px; }
+.hero h1 em { font-style: normal; color: var(--stem); }
+.hero .lede { font-size: var(--step-1); line-height: 1.45; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; padding-bottom: 32px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+  font-weight: 600; padding: 14px 22px; border-radius: 999px; border: 2px solid var(--ink);
+  transition: transform .15s ease, background .15s ease;
+}
+.btn.primary { background: var(--stem); border-color: var(--stem); color: var(--on-accent); }
+.btn:hover { transform: translateY(-2px); }
+.tray { position: relative; aspect-ratio: 5 / 4; max-width: 100%; width: 100%; }
+.tray canvas { width: 100%; height: 100%; display: block; }
+.tray-tag {
+  position: absolute; top: 8%; right: 4%; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 10px; padding: 8px 12px; font-family: var(--f-mono); font-size: 0.75rem; line-height: 1.4;
+  color: var(--muted); box-shadow: 0 6px 20px rgb(0 0 0 / 0.08);
+}
+.tray-tag b { color: var(--ink); font-weight: 500; display: block; }
+
+/* ---------- Stat strip (sits on the soil) ---------- */
+.soil { background: var(--soil); color: #EEF5EA; margin-inline: -16px; padding-inline: 16px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding-block: 36px; }
+.stat { padding: 8px 24px; border-left: 1px solid rgb(255 255 255 / 0.14); min-width: 0; }
+.stat:first-child { border-left: 0; padding-left: 0; }
+.stat .num { font-family: var(--f-display); font-weight: 800; font-size: clamp(2.2rem, 5vw, 3.2rem); line-height: 1; color: #8FE27A; font-variant-numeric: tabular-nums; }
+.stat:nth-child(2n) .num { color: #FF7AB0; }
+.stat p { font-size: 0.95rem; margin-top: 10px; color: #CFDCCB; }
+.stat cite { display: block; font-style: normal; font-family: var(--f-mono); font-size: 0.72rem; margin-top: 8px; color: #93A893; letter-spacing: 0.04em; }
+
+/* ---------- Sections ---------- */
+section { padding-block: 88px 0; }
+.sec-head { display: grid; gap: 14px; margin-bottom: 40px; }
+.sec-head h2 { font-size: var(--step-3); font-weight: 800; max-width: 22ch; }
+
+/* What are they: growth timeline (a real sequence) */
+.stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; list-style: none; padding: 0; margin: 0; counter-reset: s; }
+.stages li { border-top: 3px solid var(--leaf); padding-top: 16px; min-width: 0; }
+.stages li:last-child { border-top-color: var(--stem); }
+.stages .day { font-family: var(--f-mono); font-size: var(--step--1); color: var(--muted); }
+.stages h3 { font-size: var(--step-1); margin-block: 6px 8px; }
+.stages p { color: var(--muted); font-size: 0.97rem; }
+
+/* Studies */
+.studies { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.study {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 28px; display: grid; gap: 14px; align-content: start; min-width: 0;
+}
+.study .big { font-family: var(--f-display); font-weight: 800; font-size: var(--step-3); color: var(--leaf); line-height: 1; }
+.study.hot .big { color: var(--stem); }
+.study h3 { font-size: var(--step-1); line-height: 1.2; }
+.study p { color: var(--muted); }
+.study .ref { font-family: var(--f-mono); font-size: 0.78rem; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.study .ref a { color: var(--ink); }
+.pill { justify-self: start; font-family: var(--f-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 999px; background: var(--leaf-soft); color: var(--ink); }
+.pill.animal { background: var(--stem-soft); }
+
+/* Variety guide */
+.guide { display: grid; grid-template-columns: 280px 1fr; gap: 28px; align-items: start; }
+.guide > * { min-width: 0; }
+.chips { display: flex; flex-direction: column; gap: 6px; }
+.chip {
+  font: inherit; text-align: left; cursor: pointer; background: transparent; color: var(--ink);
+  border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 12px;
+  transition: background .15s ease, border-color .15s ease;
+}
+.chip .dot { width: 14px; height: 14px; border-radius: 50%; flex: none; }
+.chip:hover { border-color: var(--leaf); }
+.chip[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px; display: grid; gap: 22px; }
+.panel h3 { font-size: var(--step-3); }
+.panel .flavor { font-size: var(--step-1); color: var(--muted); line-height: 1.4; }
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0; }
+.facts div { min-width: 0; }
+.facts dt { font-family: var(--f-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--stem); }
+.facts dd { margin: 6px 0 0; font-size: 0.98rem; }
+.panel .note { font-size: 0.9rem; color: var(--muted); border-left: 3px solid var(--leaf); padding-left: 14px; }
+
+/* Kitchen */
+.uses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.use { background: var(--bg); padding: 24px; min-width: 0; }
+.use h3 { font-size: 1.15rem; margin-bottom: 6px; }
+.use p { color: var(--muted); font-size: 0.97rem; }
+.care { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 10px 28px; font-size: 0.97rem; }
+.care span::before { content: ""; display: inline-block; width: 8px; height: 8px; background: var(--leaf); border-radius: 50%; margin-right: 10px; vertical-align: middle; }
+
+/* Order band */
+.order { margin-top: 96px; background: var(--stem); color: var(--on-accent); border-radius: 24px; padding: 56px 40px; display: grid; grid-template-columns: 1.4fr auto; gap: 28px; align-items: center; }
+.order > * { min-width: 0; }
+.order h2 { font-size: var(--step-3); font-weight: 800; }
+.order p { margin-top: 12px; opacity: 0.9; max-width: 50ch; }
+.order .btn { background: var(--on-accent); color: var(--stem); border-color: var(--on-accent); }
+
+/* Sources */
+.sources { padding-block: 72px 56px; }
+.sources h2 { font-size: var(--step-1); margin-bottom: 16px; }
+.sources ol { margin: 0; padding-left: 1.4em; display: grid; gap: 10px; font-size: 0.9rem; color: var(--muted); max-width: 90ch; }
+.sources li { overflow-wrap: anywhere; }
+.fine { margin-top: 28px; font-size: 0.82rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; display: grid; gap: 8px; max-width: 90ch; }
+
+@media (max-width: 860px) {
+  .hero, .guide, .order { grid-template-columns: 1fr; }
+  .hero { gap: 8px; }
+  .cta-row { padding-bottom: 8px; }
+  .stats, .stages { grid-template-columns: repeat(2, 1fr); row-gap: 28px; }
+  .stat:nth-child(3) { border-left: 0; padding-left: 0; }
+  .studies, .uses { grid-template-columns: 1fr; }
+  .chips { flex-direction: row; flex-wrap: wrap; }
+  .order { padding: 40px 24px; }
+}
+@media (max-width: 480px) {
+  .facts { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: 1fr; }
+  .stat { border-left: 0; padding-left: 0; }
+  .stages { grid-template-columns: 1fr; }
+  .panel { padding: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn, .chip { transition: none; }
+  .btn:hover { transform: none; }
+}
+</style>
+
+<div class="wrap">
+  <header class="bar">
+    <a class="brand" href="https://www.ryefamilyfarm.com/">Rye Family <span>Farm</span></a>
+    <nav aria-label="Page sections">
+      <a href="#research">The research</a>
+      <a href="#varieties">Varieties</a>
+      <a href="#kitchen">How to eat them</a>
+      <a href="#order">Order</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <div>
+      <p class="eyebrow">Microgreenz · cut fresh from the tray</p>
+      <h1>Tiny greens. <em>Serious</em> nutrition.</h1>
+      <p class="lede">Microgreens are vegetables and herbs harvested at their first leaves, about 1–3 weeks after planting. Government and university researchers have found that many of them carry several times the vitamins of the full-grown plant.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="https://www.ryefamilyfarm.com/product-page/mircrogreenz">Order Microgreenz →</a>
+        <a class="btn" href="#research">See the studies</a>
+      </div>
+    </div>
+    <div class="tray" aria-hidden="true">
+      <canvas id="tray"></canvas>
+      <div class="tray-tag"><b>Cotyledon stage</b>first leaves · day 10</div>
+    </div>
+  </div>
+</div>
+
+<div class="soil">
+  <div class="wrap stats">
+    <div class="stat">
+      <div class="num">4–40×</div>
+      <p>more vitamins and carotenoids than mature leaves, depending on variety</p>
+      <cite>Xiao et al., 2012 · USDA / UMD</cite>
+    </div>
+    <div class="stat">
+      <div class="num">25</div>
+      <p>microgreen varieties measured in the first major nutrient study</p>
+      <cite>J. Agric. Food Chem. 60(31)</cite>
+    </div>
+    <div class="stat">
+      <div class="num">↓ LDL</div>
+      <p>lower “bad” cholesterol in mice on a high-fat diet fed red cabbage microgreens</p>
+      <cite>Huang et al., 2016 · animal study</cite>
+    </div>
+    <div class="stat">
+      <div class="num">20–50×</div>
+      <p>more protective compounds in young broccoli sprouts than in broccoli heads</p>
+      <cite>Fahey et al., 1997 · Johns Hopkins</cite>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section id="what">
+    <div class="sec-head">
+      <p class="eyebrow">What you're getting</p>
+      <h2>Harvested at the moment a plant is most concentrated.</h2>
+      <p class="lede">A seed packs everything a plant needs to get started. At the first-leaf stage, that store of nutrients sits in a few tender bites, before it spreads out into a full-sized vegetable.</p>
+    </div>
+    <ol class="stages">
+      <li><span class="day">Day 0</span><h3>Seed</h3><p>Seeds are sown densely on trays of growing medium.</p></li>
+      <li><span class="day">Days 2–4</span><h3>Germination</h3><p>Roots anchor and stems push up toward the light.</p></li>
+      <li><span class="day">Days 5–9</span><h3>Greening</h3><p>Under light, stems color up and the first leaves open.</p></li>
+      <li><span class="day">Days 7–21</span><h3>Harvest</h3><p>Cut just above the soil when the first leaves are fully open.</p></li>
+    </ol>
+  </section>
+
+  <section id="research">
+    <div class="sec-head">
+      <p class="eyebrow">The research</p>
+      <h2>What scientists have found so far</h2>
+      <p class="lede">Each card links to the original study. We say clearly which results come from lab or animal work, since human trials on microgreens are still early.</p>
+    </div>
+    <div class="studies">
+      <article class="study">
+        <span class="pill">Lab analysis · 25 varieties</span>
+        <div class="big">4–40×</div>
+        <h3>Microgreens out-measured mature leaves for vitamins C, E, K and carotenoids</h3>
+        <p>USDA and University of Maryland scientists tested 25 commercial microgreens. Red cabbage led for vitamin C, cilantro for carotenoids, garnet amaranth for vitamin K and green daikon radish for vitamin E. Cilantro microgreens had about three times the beta-carotene of mature cilantro.</p>
+        <p class="ref">Xiao Z, Lester GE, Luo Y, Wang Q. <i>Journal of Agricultural and Food Chemistry</i> 60(31):7644–7651, 2012. <a href="https://doi.org/10.1021/jf300459b">doi:10.1021/jf300459b</a></p>
+      </article>
+      <article class="study hot">
+        <span class="pill animal">Animal study · 8 weeks</span>
+        <div class="big">↓ LDL</div>
+        <h3>Red cabbage microgreens lowered cholesterol and liver inflammation in mice</h3>
+        <p>Mice on a high-fat diet that also ate red cabbage microgreens had lower LDL, less cholesterol stored in the liver and fewer inflammation markers. The microgreens held more polyphenols and glucosinolates than mature red cabbage.</p>
+        <p class="ref">Huang H, Jiang X, Xiao Z, et al. <i>Journal of Agricultural and Food Chemistry</i> 64(48):9161–9171, 2016. <a href="https://pubmed.ncbi.nlm.nih.gov/27933986/">PubMed 27933986</a></p>
+      </article>
+      <article class="study">
+        <span class="pill">Lab analysis · broccoli</span>
+        <div class="big">20–50×</div>
+        <h3>Young broccoli carries far more glucoraphanin than the grown-up head</h3>
+        <p>Johns Hopkins researchers found three-day-old broccoli sprouts held 20 to 50 times the protective compounds of mature broccoli. The main one, glucoraphanin, turns into sulforaphane when you chew. Microgreens are a little older than sprouts, and they're part of the same young-plant story.</p>
+        <p class="ref">Fahey JW, Zhang Y, Talalay P. <i>PNAS</i> 94(19):10367–10372, 1997. <a href="https://doi.org/10.1073/pnas.94.19.10367">doi:10.1073/pnas.94.19.10367</a></p>
+      </article>
+      <article class="study">
+        <span class="pill">Review · 2023</span>
+        <div class="big">Rich in polyphenols</div>
+        <h3>Reviews point to antioxidants that may support long-term health</h3>
+        <p>Recent scientific reviews describe microgreens as concentrated sources of polyphenols, carotenoids, vitamins and minerals. They also note that most of the health evidence so far comes from lab and animal studies, so more human research is needed.</p>
+        <p class="ref">Bhaswant M, et al. <i>Molecules</i> 28(2):867, 2023. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9864543/">PMC9864543</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section id="varieties">
+    <div class="sec-head">
+      <p class="eyebrow">Field guide to the tray</p>
+      <h2>Pick a green, see what it brings</h2>
+    </div>
+    <div class="guide">
+      <div class="chips" role="tablist" aria-label="Microgreen varieties" id="chips"></div>
+      <div class="panel" role="tabpanel" id="panel" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="kitchen">
+    <div class="sec-head">
+      <p class="eyebrow">In the kitchen</p>
+      <h2>A handful on everything</h2>
+      <p class="lede">Microgreens are best raw, so they keep their crunch and their vitamins. Add them at the end.</p>
+    </div>
+    <div class="uses">
+      <div class="use"><h3>Breakfast</h3><p>Pile onto scrambled eggs, avocado toast or a breakfast burrito.</p></div>
+      <div class="use"><h3>Smoothies</h3><p>Blend a handful of broccoli or pea shoots in with fruit. You won't taste them.</p></div>
+      <div class="use"><h3>Sandwiches & wraps</h3><p>Swap lettuce for radish microgreens for a peppery crunch.</p></div>
+      <div class="use"><h3>Tacos & bowls</h3><p>Cilantro and red cabbage brighten tacos, rice bowls and pho.</p></div>
+      <div class="use"><h3>Salads</h3><p>Toss with greens or serve on their own with lemon and olive oil.</p></div>
+      <div class="use"><h3>Kids' plates</h3><p>Sweet pea shoots and sunflower are an easy first green for picky eaters.</p></div>
+    </div>
+    <div class="care">
+      <span>Keep refrigerated in their container</span>
+      <span>Rinse right before eating, not before storing</span>
+      <span>Best within 5–7 days</span>
+    </div>
+  </section>
+
+  <section id="order" style="padding-top:0">
+    <div class="order">
+      <div>
+        <h2>Bring home this week's tray</h2>
+        <p>Grown by our family in small batches and cut close to pickup, so you get them at their freshest.</p>
+      </div>
+      <a class="btn" href="https://www.ryefamilyfarm.com/product-page/mircrogreenz">Order Microgreenz →</a>
+    </div>
+  </section>
+
+  <footer class="sources">
+    <h2>Sources</h2>
+    <ol>
+      <li>Xiao Z, Lester GE, Luo Y, Wang Q. Assessment of vitamin and carotenoid concentrations of emerging food products: edible microgreens. <i>J. Agric. Food Chem.</i> 2012;60(31):7644–7651. <a href="https://doi.org/10.1021/jf300459b">doi:10.1021/jf300459b</a></li>
+      <li>Huang H, Jiang X, Xiao Z, et al. Red cabbage microgreens lower circulating LDL, liver cholesterol, and inflammatory cytokines in mice fed a high-fat diet. <i>J. Agric. Food Chem.</i> 2016;64(48):9161–9171. <a href="https://pubmed.ncbi.nlm.nih.gov/27933986/">PubMed 27933986</a></li>
+      <li>Fahey JW, Zhang Y, Talalay P. Broccoli sprouts: an exceptionally rich source of inducers of enzymes that protect against chemical carcinogens. <i>PNAS</i> 1997;94(19):10367–10372. <a href="https://doi.org/10.1073/pnas.94.19.10367">doi:10.1073/pnas.94.19.10367</a></li>
+      <li>Bhaswant M, Shanmugam DK, Miyazawa T, Abe C, Miyazawa T. Microgreens: a comprehensive review of bioactive molecules and health benefits. <i>Molecules</i> 2023;28(2):867. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9864543/">PMC9864543</a></li>
+      <li>Choe U, Yu LL, Wang TTY. The science behind microgreens as an exciting new food for the 21st century. <i>J. Agric. Food Chem.</i> 2018;66(44):11519–11530. <a href="https://doi.org/10.1021/acs.jafc.8b03096">doi:10.1021/acs.jafc.8b03096</a></li>
+    </ol>
+    <div class="fine">
+      <p>These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. Nutrient levels vary by variety and growing conditions.</p>
+      <p>Taking a blood thinner such as warfarin? Leafy greens are high in vitamin K, so check with your doctor about how much to eat.</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  /* ---------- Variety guide ---------- */
+  var varieties = [
+    { name: "Red cabbage", color: "#8E2A7A", flavor: "Mild, earthy and slightly sweet, with violet stems.",
+      standout: "Highest vitamin C of 25 varieties tested", study: "Xiao 2012; Huang 2016",
+      best: "Slaws, tacos, grain bowls",
+      note: "This is the microgreen from the cholesterol study in mice, where it beat mature red cabbage for polyphenols." },
+    { name: "Cilantro", color: "#4E9A3A", flavor: "Bright and citrusy, like the herb but softer.",
+      standout: "Highest carotenoids of 25 tested; about 3× the beta-carotene of mature cilantro", study: "Xiao 2012",
+      best: "Tacos, salsa, pho, curries",
+      note: "Carotenoids such as beta-carotene are what your body uses to make vitamin A." },
+    { name: "Garnet amaranth", color: "#C8175D", flavor: "Mild and a little beet-like, with hot-pink color.",
+      standout: "Highest vitamin K of 25 tested", study: "Xiao 2012",
+      best: "Salads, garnish, rice dishes",
+      note: "Vitamin K supports normal blood clotting and bone health." },
+    { name: "Daikon radish", color: "#7DB54A", flavor: "Peppery with a quick spicy kick.",
+      standout: "Highest vitamin E of 25 tested", study: "Xiao 2012",
+      best: "Sandwiches, sushi, eggs, burgers",
+      note: "Vitamin E is a fat-soluble antioxidant, so pair radish greens with avocado, eggs or olive oil." },
+    { name: "Broccoli", color: "#3A7D44", flavor: "Fresh and mild, like a gentle broccoli stem.",
+      standout: "Young broccoli is rich in glucoraphanin, the source of sulforaphane", study: "Fahey 1997",
+      best: "Smoothies, sandwiches, salads",
+      note: "Chewing raw greens releases the enzyme that turns glucoraphanin into sulforaphane, so eat them uncooked." },
+    { name: "Pea shoots", color: "#9CC95A", flavor: "Sweet, crunchy and tastes like fresh peas.",
+      standout: "Hearty tendrils that hold up in cooking", study: "Kitchen favorite",
+      best: "Snacking, stir-fries, kids' plates",
+      note: "Golden and green pea tendrils were both among the 25 varieties in the USDA study." },
+    { name: "Sunflower", color: "#D9A21B", flavor: "Nutty and juicy with a thick crunch.",
+      standout: "A filling, meaty texture for a microgreen", study: "Kitchen favorite",
+      best: "Salads, wraps, toast",
+      note: "Sunflower shoots are one of the best options for people who think they don't like greens." }
+  ];
+  var chips = document.getElementById("chips");
+  var panel = document.getElementById("panel");
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function show(i) {
+    var v = varieties[i];
+    Array.prototype.forEach.call(chips.children, function (c, j) { c.setAttribute("aria-selected", j === i ? "true" : "false"); c.tabIndex = j === i ? 0 : -1; });
+    panel.innerHTML =
+      '<p class="eyebrow">Variety ' + (i + 1) + ' of ' + varieties.length + '</p>' +
+      '<h3>' + esc(v.name) + '</h3>' +
+      '<p class="flavor">' + esc(v.flavor) + '</p>' +
+      '<dl class="facts"><div><dt>Standout</dt><dd>' + esc(v.standout) + '</dd></div>' +
+      '<div><dt>Try it in</dt><dd>' + esc(v.best) + '</dd></div>' +
+      '<div><dt>Source</dt><dd>' + esc(v.study) + '</dd></div></dl>' +
+      '<p class="note">' + esc(v.note) + '</p>';
+  }
+  varieties.forEach(function (v, i) {
+    var b = document.createElement("button");
+    b.className = "chip"; b.type = "button"; b.id = "chip-" + i; b.setAttribute("role", "tab");
+    b.innerHTML = '<span class="dot" style="background:' + v.color + '"></span>' + esc(v.name);
+    b.addEventListener("click", function () { show(i); });
+    b.addEventListener("keydown", function (e) {
+      var d = (e.key === "ArrowDown" || e.key === "ArrowRight") ? 1 : (e.key === "ArrowUp" || e.key === "ArrowLeft") ? -1 : 0;
+      if (!d) return; e.preventDefault();
+      var n = (i + d + varieties.length) % varieties.length; show(n); chips.children[n].focus();
+    });
+    chips.appendChild(b);
+  });
+  show(0);
+
+  /* ---------- Living tray ---------- */
+  var cv = document.getElementById("tray");
+  var ctx = cv.getContext("2d");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var stems = [], W = 0, H = 0;
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function build() {
+    var r = cv.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    stems = [];
+    var n = Math.max(28, Math.round(W / 9));
+    for (var k = 0; k < n; k++) {
+      var magenta = Math.random() < 0.38;
+      stems.push({
+        x: rand(6, W - 6), h: rand(H * 0.35, H * 0.78), lean: rand(-14, 14),
+        phase: rand(0, Math.PI * 2), speed: rand(0.5, 1.1), leaf: rand(9, 16),
+        magenta: magenta, depth: Math.random()
+      });
+    }
+    stems.sort(function (a, b) { return a.depth - b.depth; });
+  }
+  function draw(t) {
+    var soilY = H * 0.9, leaf = css("--leaf"), stem = css("--stem"), soil = css("--soil");
+    ctx.clearRect(0, 0, W, H);
+    stems.forEach(function (s) {
+      var sway = Math.sin(t * 0.001 * s.speed + s.phase) * (4 + s.h * 0.02);
+      var tx = s.x + s.lean + sway, ty = soilY - s.h;
+      ctx.globalAlpha = 0.55 + s.depth * 0.45;
+      ctx.strokeStyle = s.magenta ? stem : leaf;
+      ctx.lineWidth = 2 + s.depth * 1.6; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(s.x, soilY);
+      ctx.quadraticCurveTo(s.x + s.lean * 0.2, soilY - s.h * 0.55, tx, ty); ctx.stroke();
+      var ang = Math.atan2(ty - (soilY - s.h * 0.55), tx - (s.x + s.lean * 0.2));
+      ctx.fillStyle = leaf;
+      [-1, 1].forEach(function (side) {
+        ctx.save(); ctx.translate(tx, ty); ctx.rotate(ang + side * 1.05);
+        ctx.beginPath(); ctx.ellipse(s.leaf * 0.9, 0, s.leaf, s.leaf * 0.48, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      });
+    });
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = soil; ctx.fillRect(0, soilY, W, H - soilY + 1);
+  }
+  function loop(t) { draw(t); if (!reduce) requestAnimationFrame(loop); }
+  build(); draw(0);
+  if (!reduce) requestAnimationFrame(loop);
+  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { build(); draw(performance.now()); }, 120); });
+  if (window.matchMedia) {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    if (mq.addEventListener) mq.addEventListener("change", function () { draw(performance.now()); });
+  }
+})();
+</script>
