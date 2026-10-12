@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+<style>
+  @font-face { font-family: 'Fraunces'; src: url('Fraunces.ttf'); font-weight: 100 900; font-style: normal; }
+  @font-face { font-family: 'Archivo'; src: url('Archivo.ttf'); font-weight: 100 900; font-stretch: 62% 125%; }
+  .serif { font-family: 'Fraunces'; font-variation-settings: 'SOFT' 100, 'WONK' 0, 'opsz' 144; }
+  .sans  { font-family: 'Archivo'; font-stretch: 112%; }
+</style>
+  <rect width="1000" height="1000" fill="#1E4636"/>
+  <circle cx="500" cy="500" r="440" fill="none" stroke="#E2A63B" stroke-width="3" opacity=".7"/>
+  <g fill="none" stroke="#E2A63B" stroke-width="16" stroke-linecap="round">
+    <path d="M 330,560 V 360 A 110,110 0 0 1 550,360 V 560"/>
+    <path d="M 450,560 V 360 A 110,110 0 0 1 670,360 V 560"/>
+  </g>
+  <text class="serif" x="500" y="525" text-anchor="middle" font-size="210" font-weight="600"
+        fill="#F5EBDC" letter-spacing="-6">LP</text>
+  <rect x="300" y="568" width="400" height="5" fill="#E2A63B"/>
+  <text class="serif" x="500" y="690" text-anchor="middle" font-size="96" font-weight="600"
+        letter-spacing="1" fill="#F5EBDC">Los Primos</text>
+  <text class="sans" x="500" y="756" text-anchor="middle" font-size="30" font-weight="600"
+        letter-spacing="11" fill="#E2A63B">TIENDA · TAQUERIA</text>
+</svg>

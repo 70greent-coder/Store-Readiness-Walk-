@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+<style>
+  @font-face { font-family: 'Fraunces'; src: url('Fraunces.ttf'); font-weight: 100 900; font-style: normal; }
+  @font-face { font-family: 'Archivo'; src: url('Archivo.ttf'); font-weight: 100 900; font-stretch: 62% 125%; }
+  .serif { font-family: 'Fraunces'; font-variation-settings: 'SOFT' 100, 'WONK' 0, 'opsz' 144; }
+  .sans  { font-family: 'Archivo'; font-stretch: 112%; }
+</style>
+  <defs>
+    <path id="top" d="M 112,500 A 388,388 0 0 1 888,500"/>
+    <path id="bot" d="M 72,500 A 428,428 0 0 0 928,500"/>
+  </defs>
+  <rect width="1000" height="1000" fill="#F5EBDC"/>
+  <circle cx="500" cy="500" r="482" fill="#A8352A"/>
+  <circle cx="500" cy="500" r="466" fill="none" stroke="#F5EBDC" stroke-width="2.5" opacity=".55"/>
+  <circle cx="500" cy="500" r="352" fill="#F5EBDC"/>
+  <circle cx="500" cy="500" r="334" fill="none" stroke="#A8352A" stroke-width="2.5"/>
+
+  <text class="sans" font-size="56" font-weight="700" letter-spacing="22" fill="#F5EBDC">
+    <textPath href="#top" startOffset="50%" text-anchor="middle">TAQUERIA</textPath></text>
+  <text class="sans" font-size="44" font-weight="600" letter-spacing="15" fill="#F5EBDC">
+    <textPath href="#bot" startOffset="50%" text-anchor="middle">TIENDA HISPANA</textPath></text>
+  <path d="M102,480 C105.6,496.4 105.6,496.4 122,500
+    C105.6,503.6 105.6,503.6 102,520
+    C98.4,503.6 98.4,503.6 82,500
+    C98.4,496.4 98.4,496.4 102,480Z" fill="#E2A63B"/><path d="M898,480 C901.6,496.4 901.6,496.4 918,500
+    C901.6,503.6 901.6,503.6 898,520
+    C894.4,503.6 894.4,503.6 878,500
+    C894.4,496.4 894.4,496.4 898,480Z" fill="#E2A63B"/>
+
+  <text class="serif" x="500" y="452" text-anchor="middle" font-size="96" font-style="italic"
+        font-weight="400" fill="#A8352A" style="font-variation-settings:'SOFT' 100,'WONK' 1,'opsz' 144">Los</text>
+  <text class="serif" x="500" y="586" text-anchor="middle" font-size="150" font-weight="700"
+        letter-spacing="-3" fill="#1E4636">Primos</text>
+  <line x1="372" y1="640" x2="460" y2="640" stroke="#E2A63B" stroke-width="4"/>
+  <path d="M500,626 C502.52,637.48 502.52,637.48 514,640
+    C502.52,642.52 502.52,642.52 500,654
+    C497.48,642.52 497.48,642.52 486,640
+    C497.48,637.48 497.48,637.48 500,626Z" fill="#A8352A"/>
+  <line x1="540" y1="640" x2="628" y2="640" stroke="#E2A63B" stroke-width="4"/>
+  <text class="sans" x="500" y="712" text-anchor="middle" font-size="30" font-weight="600"
+        letter-spacing="9" fill="#1E4636">TIENDA Y TAQUERIA</text>
+</svg>
