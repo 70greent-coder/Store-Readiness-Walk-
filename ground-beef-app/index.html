@@ -22,6 +22,8 @@
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg-main); color: var(--text-main); line-height: 1.4; padding-bottom: 96px; }
   .app-container { max-width: 720px; margin: 0 auto; padding: 0 12px; display: flex; flex-direction: column; gap: 12px; }
   .topbar { background: var(--primary-blue); color: #fff; padding: 14px 16px 10px; }
+  .topbar .brand { display: flex; align-items: center; gap: 10px; }
+  .topbar .brand img { width: 64px; height: auto; flex-shrink: 0; }
   .topbar .zone { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #fde68a; margin-bottom: 2px; }
   .topbar h1 { font-size: 1.05rem; font-weight: 800; }
   .topbar .sub { font-size: 0.72rem; opacity: 0.85; }
@@ -114,9 +116,14 @@
 <body>
 
 <header class="topbar no-print">
-  <div class="zone">Carolina Zone</div>
-  <h1>🥩 DeCA Ground Beef Tracking App</h1>
-  <div class="sub">Fresh Ground Beef Production Log / Tracking List — DeCA Form 40-337</div>
+  <div class="brand">
+    <img src="commissary-logo.png" alt="Commissary logo" onerror="this.remove()">
+    <div>
+      <div class="zone">Carolina Zone</div>
+      <h1>DeCA Ground Beef Tracking App</h1>
+      <div class="sub">Fresh Ground Beef Production Log / Tracking List — DeCA Form 40-337</div>
+    </div>
+  </div>
   <div class="tabs">
     <button class="tab active" data-tab="log" onclick="showTab('log')">Grind Log</button>
     <button class="tab" data-tab="records" onclick="showTab('records')">Records</button>
@@ -250,7 +257,7 @@
         </ul>
       </details>
     </div>
-    <div class="ver">Version 2.3 · Carolina Zone · works offline</div>
+    <div class="ver">Version 2.4 · Carolina Zone · works offline</div>
   </section>
 </main>
 
