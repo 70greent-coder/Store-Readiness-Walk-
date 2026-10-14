@@ -1,343 +1,1111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SD Daily Operational Readiness Walk</title>
-    <style>
-        :root {
-            --primary: #0f172a; --primary-blue: #1e3a8a; --accent-blue: #2563eb;
-            --border-color: #cbd5e1; --bg-main: #f1f5f9; --card-bg: #ffffff;
-            --text-main: #0f172a; --text-muted: #475569;
-            --success-green: #15803d; --success-bg: #dcfce7;
-            --warning-amber: #b45309; --warning-bg: #fef3c7;
-            --danger-red: #b91c1c; --danger-bg: #fee2e2;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-main); color: var(--text-main); line-height: 1.4; padding-bottom: 90px; }
-        .app-container { max-width: 720px; margin: 12px auto; padding: 0 12px; display: flex; flex-direction: column; gap: 12px; }
-        .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
-        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; }
-        .section-title { font-size: 0.88rem; font-weight: 800; color: var(--primary-blue); }
-        .walk-row { border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; margin-bottom: 10px; transition: all 0.15s ease; }
-        .walk-row.status-a { border-left: 5px solid var(--success-green); background: #fcfdfc; }
-        .walk-row.status-ar { border-left: 5px solid var(--warning-amber); background: #fffdf8; }
-        .walk-row.status-ia { border-left: 5px solid var(--danger-red); background: #fdf6f6; }
-        .walk-name { font-size: 0.88rem; font-weight: 800; color: #0f172a; margin-bottom: 3px; }
-        .walk-criteria { font-size: 0.76rem; color: var(--text-muted); margin-bottom: 10px; }
-        .segmented-group { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
-        .segmented-group input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
-        .seg-btn { display: flex; align-items: center; justify-content: center; padding: 9px 4px; border: 1.5px solid #cbd5e1; border-radius: 6px; background: #f8fafc; font-size: 0.82rem; font-weight: 700; color: #334155; text-align: center; cursor: pointer; user-select: none; }
-        input[value="A"]:checked + .seg-btn { background-color: var(--success-bg); border-color: var(--success-green); color: var(--success-green); }
-        input[value="AR"]:checked + .seg-btn { background-color: var(--warning-bg); border-color: var(--warning-amber); color: var(--warning-amber); }
-        input[value="IA"]:checked + .seg-btn { background-color: var(--danger-bg); border-color: var(--danger-red); color: var(--danger-red); }
-        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-        .input-field label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 3px; display: block; }
-        input[type="text"], input[type="date"], input[type="time"], select, textarea { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.88rem; }
-        .action-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; margin-bottom: 8px; }
-        .action-card-top { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; }
-        .btn-remove { background: none; border: none; color: var(--danger-red); font-size: 1.1rem; cursor: pointer; font-weight: 700; line-height: 1; }
-        .btn-add-action { width: 100%; padding: 9px; background: #eff6ff; border: 1.5px dashed var(--accent-blue); color: var(--accent-blue); border-radius: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer; margin-top: 4px;}
-        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-top: 1px solid #cbd5e1; padding: 10px; display: flex; gap: 8px; max-width: 720px; margin: 0 auto; }
-        .btn-bottom { flex: 1; padding: 12px; border-radius: 8px; font-size: 0.88rem; font-weight: 800; cursor: pointer; border: none; }
-        .btn-bottom.save { flex: 2; background: var(--primary-blue); color: #ffffff; }
-        .btn-bottom.copy { flex: 2; background: #334155; color: #ffffff; }
-        @media print { body { background: #fff !important; } .bottom-bar, .btn-add-action, .btn-remove { display: none !important; } }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>SD Daily Operational Readiness Walk</title>
+<meta name="description" content="Carolina Zone Store Director Daily Operational Readiness Walk.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#1e3a8a">
+<meta name="application-name" content="Readiness Walk">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Readiness Walk">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  :root {
+    --primary: #0f172a; --primary-blue: #1e3a8a; --accent-blue: #2563eb;
+    --border-color: #cbd5e1; --bg-main: #f1f5f9; --card-bg: #ffffff;
+    --text-main: #0f172a; --text-muted: #475569;
+    --success-green: #15803d; --success-bg: #dcfce7;
+    --warning-amber: #b45309; --warning-bg: #fef3c7;
+    --danger-red: #b91c1c; --danger-bg: #fee2e2;
+    --info-bg: #dbeafe;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg-main); color: var(--text-main); line-height: 1.4; padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); -webkit-text-size-adjust: 100%; }
+
+  .topbar { background: var(--primary-blue); color: #fff; padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 14px; }
+  .topbar .brand { display: flex; align-items: center; gap: 12px; max-width: 720px; margin: 0 auto; }
+  .topbar .brand img { width: 64px; height: auto; flex-shrink: 0; }
+  .topbar .zone { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #fde68a; margin-bottom: 2px; }
+  .topbar h1 { font-size: 1.4rem; font-family: Georgia, "Times New Roman", serif; letter-spacing: 0.01em; font-weight: 800; line-height: 1.15; }
+  .topbar .sub { font-size: 0.72rem; opacity: 0.85; margin-top: 2px; }
+
+  .app-container { max-width: 720px; margin: 12px auto; padding: 0 12px; display: flex; flex-direction: column; gap: 12px; }
+  .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .btn-new { display: none; background: none; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 10px; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); cursor: pointer; font-family: inherit; }
+  .js .btn-new { display: inline-block; }
+  .saved-note { display: none; font-size: 0.72rem; color: var(--success-green); font-weight: 700; margin-top: 4px; }
+  .js .saved-note { display: block; }
+  .standard { font-size: 0.74rem; color: var(--text-muted); margin-top: 10px; padding: 8px 10px; background: #f8fafc; border-radius: 6px; }
+  .section-header { margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; }
+  .section-title { font-size: 0.88rem; font-weight: 800; color: var(--primary-blue); }
+  .section-sub { font-size: 0.74rem; color: var(--text-muted); font-style: italic; margin-top: 2px; }
+  .field-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin: 12px 0 4px; display: block; }
+
+  .walk-row { border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; margin-bottom: 10px; }
+  .walk-row:has(input[value="A"]:checked)  { border-left: 5px solid var(--success-green); background: #fcfdfc; }
+  .walk-row:has(input[value="AR"]:checked) { border-left: 5px solid var(--warning-amber); background: #fffdf8; }
+  .walk-row:has(input[value="IA"]:checked) { border-left: 5px solid var(--danger-red); background: #fdf6f6; }
+  .walk-name { font-size: 0.88rem; font-weight: 800; color: #0f172a; margin-bottom: 3px; }
+  .walk-criteria { font-size: 0.76rem; color: var(--text-muted); margin-bottom: 10px; }
+
+  .segmented-group { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .segmented-group.two { grid-template-columns: 1fr 1fr; }
+  .segmented-group.stack { grid-template-columns: 1fr; }
+  .segmented-group label { position: relative; display: block; }
+  .segmented-group input[type="radio"] { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .seg-btn { display: flex; align-items: center; justify-content: center; min-height: 42px; padding: 8px 4px; border: 1.5px solid #cbd5e1; border-radius: 6px; background: #f8fafc; font-size: 0.82rem; font-weight: 700; color: #334155; text-align: center; cursor: pointer; user-select: none; -webkit-user-select: none; }
+  input:checked + .seg-btn.g { background: var(--success-bg); border-color: var(--success-green); color: var(--success-green); }
+  input:checked + .seg-btn.y { background: var(--warning-bg); border-color: var(--warning-amber); color: var(--warning-amber); }
+  input:checked + .seg-btn.r { background: var(--danger-bg); border-color: var(--danger-red); color: var(--danger-red); }
+  input:checked + .seg-btn.b { background: var(--info-bg); border-color: var(--accent-blue); color: var(--primary-blue); }
+  input[type="radio"]:focus-visible + .seg-btn, input[type="checkbox"]:focus-visible + .check-box { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
+
+  .form-grid-2 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 8px; margin-top: 10px; }
+  .input-field label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 3px; display: block; }
+  .window { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: 6px; align-items: center; }
+  .window span { font-size: 0.75rem; color: var(--text-muted); }
+  input[type="text"], input[type="date"], input[type="time"], textarea { width: 100%; min-width: 0; display: block; min-height: 42px; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 16px; font-family: inherit; background: #fff; color: var(--text-main); -webkit-appearance: none; appearance: none; }
+  textarea { min-height: 70px; resize: vertical; line-height: 1.35; }
+
+  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .check { position: relative; display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 10px; border: 1.5px solid #cbd5e1; border-radius: 6px; background: #f8fafc; cursor: pointer; font-size: 0.8rem; font-weight: 600; color: #334155; }
+  .check input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .check-box { flex-shrink: 0; width: 20px; height: 20px; border: 2px solid #94a3b8; border-radius: 4px; background: #fff; position: relative; }
+  .check:has(input:checked) { border-color: var(--accent-blue); background: var(--info-bg); color: var(--primary-blue); }
+  .check input:checked + .check-box { background: var(--accent-blue); border-color: var(--accent-blue); }
+  .check input:checked + .check-box::after { content: ""; position: absolute; left: 5px; top: 1px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+
+  .action-card { display: none; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; margin-bottom: 8px; }
+  .action-card-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; }
+  .action-card .form-grid-2 { margin-top: 6px; }
+  .verify-row { align-items: center; }
+  .esc { display: flex; align-items: center; gap: 6px; }
+  .esc-label { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
+  .esc .segmented-group { flex: 1; }
+  .esc .seg-btn { min-height: 42px; font-size: 0.78rem; }
+  .tag { display: none; font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; margin-right: 6px; }
+  .tag.ar { background: var(--warning-bg); color: var(--warning-amber); }
+  .tag.ia { background: var(--danger-bg); color: var(--danger-red); }
+  .btn-remove { display: none; background: none; border: none; color: var(--danger-red); font-size: 1.25rem; cursor: pointer; font-weight: 700; line-height: 1; padding: 2px 8px; }
+  .js .btn-remove { display: inline-block; }
+
+  body:has(input[name="area_1"][value="AR"]:checked, input[name="area_1"][value="IA"]:checked) #act-1,
+  body:has(input[name="area_2"][value="AR"]:checked, input[name="area_2"][value="IA"]:checked) #act-2,
+  body:has(input[name="area_3"][value="AR"]:checked, input[name="area_3"][value="IA"]:checked) #act-3,
+  body:has(input[name="area_4"][value="AR"]:checked, input[name="area_4"][value="IA"]:checked) #act-4,
+  body:has(input[name="area_5"][value="AR"]:checked, input[name="area_5"][value="IA"]:checked) #act-5,
+  body:has(input[name="area_6"][value="AR"]:checked, input[name="area_6"][value="IA"]:checked) #act-6,
+  body:has(input[name="area_7"][value="AR"]:checked, input[name="area_7"][value="IA"]:checked) #act-7 { display: block; }
+  body:has(input[name="area_1"][value="AR"]:checked) #act-1 .tag.ar,
+  body:has(input[name="area_1"][value="IA"]:checked) #act-1 .tag.ia,
+  body:has(input[name="area_2"][value="AR"]:checked) #act-2 .tag.ar,
+  body:has(input[name="area_2"][value="IA"]:checked) #act-2 .tag.ia,
+  body:has(input[name="area_3"][value="AR"]:checked) #act-3 .tag.ar,
+  body:has(input[name="area_3"][value="IA"]:checked) #act-3 .tag.ia,
+  body:has(input[name="area_4"][value="AR"]:checked) #act-4 .tag.ar,
+  body:has(input[name="area_4"][value="IA"]:checked) #act-4 .tag.ia,
+  body:has(input[name="area_5"][value="AR"]:checked) #act-5 .tag.ar,
+  body:has(input[name="area_5"][value="IA"]:checked) #act-5 .tag.ia,
+  body:has(input[name="area_6"][value="AR"]:checked) #act-6 .tag.ar,
+  body:has(input[name="area_6"][value="IA"]:checked) #act-6 .tag.ia,
+  body:has(input[name="area_7"][value="AR"]:checked) #act-7 .tag.ar,
+  body:has(input[name="area_7"][value="IA"]:checked) #act-7 .tag.ia { display: inline-block; }
+
+  .extras .action-card.extra.shown,
+  .extras .action-card.extra:has(.issue:not(:placeholder-shown)) { display: block; }
+  html:not(.js) .extras .action-card.extra:first-child,
+  html:not(.js) .extras .action-card.extra:has(.issue:not(:placeholder-shown)) + .action-card.extra { display: block; }
+
+  .empty-note { text-align: center; padding: 12px; font-size: 0.75rem; color: #94a3b8; border: 1px dashed #cbd5e1; border-radius: 6px; margin-bottom: 8px; }
+  body:has(.walk-row input[value="AR"]:checked, .walk-row input[value="IA"]:checked) .empty-note { display: none; }
+  .btn-add-action { display: none; width: 100%; min-height: 44px; padding: 10px; background: #fff; border: 1.5px dashed var(--accent-blue); color: var(--accent-blue); border-radius: 6px; font-weight: 700; font-size: 0.82rem; cursor: pointer; font-family: inherit; }
+  .js .btn-add-action { display: block; }
+
+  .sig-wrap { position: relative; border: 1.5px dashed #94a3b8; border-radius: 8px; background: #fff; }
+  .sig-wrap canvas { display: block; width: 100%; height: 130px; touch-action: none; cursor: crosshair; }
+  .sig-hint { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); text-align: center; font-size: 0.8rem; color: #94a3b8; pointer-events: none; }
+  .sig-wrap.signed .sig-hint { display: none; }
+  .sig-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; font-size: 0.72rem; color: var(--text-muted); }
+  .btn-link { background: none; border: none; color: var(--accent-blue); font-weight: 700; font-size: 0.8rem; cursor: pointer; padding: 6px 4px; font-family: inherit; }
+  html:not(.js) .sig-block { display: none; }
+  .defs { font-size: 0.74rem; color: var(--text-muted); margin-top: 12px; }
+  .defs summary { font-weight: 700; color: var(--primary-blue); cursor: pointer; padding: 4px 0; }
+  .defs ul { padding-left: 18px; margin-top: 4px; }
+  .defs li { margin-bottom: 3px; }
+
+  .preview-banner { background: var(--warning-bg); border: 1px solid #f59e0b; color: #78350f; border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; }
+  .js .preview-banner { display: none; }
+
+  .bottom-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-top: 1px solid #cbd5e1; padding: 10px 10px calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 10; }
+  .js .bottom-bar { display: block; }
+  .bottom-inner { display: flex; gap: 8px; max-width: 720px; margin: 0 auto; }
+  .btn-bottom { flex: 1; min-height: 48px; padding: 10px 6px; border-radius: 8px; font-size: 0.85rem; font-weight: 800; cursor: pointer; border: none; color: #fff; font-family: inherit; }
+  .btn-bottom.copy { background: #334155; }
+  .btn-bottom.email { background: #0f766e; }
+  .btn-bottom.save { background: var(--primary-blue); }
+  .btn-bottom:disabled { opacity: 0.6; }
+
+  .toast { position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: #0f172a; color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity 0.2s; max-width: 90vw; text-align: center; z-index: 40; }
+  .toast.show { opacity: 1; }
+
+  .modal { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.55); z-index: 30; padding: 16px; align-items: center; justify-content: center; }
+  .modal.open { display: flex; }
+  .modal-box { background: #fff; border-radius: 12px; padding: 16px; width: 100%; max-width: 480px; max-height: 85vh; display: flex; flex-direction: column; gap: 10px; }
+  .modal-box h3 { font-size: 1rem; color: var(--primary-blue); }
+  .modal-box p { font-size: 0.82rem; color: var(--text-muted); word-break: break-word; }
+  .modal-box textarea { flex: 1; min-height: 240px; font-size: 14px; font-family: ui-monospace, Menlo, monospace; }
+  .modal-actions { display: flex; flex-direction: column; gap: 8px; }
+  .modal-actions button { min-height: 46px; border-radius: 8px; border: none; font-weight: 800; font-size: 0.9rem; font-family: inherit; cursor: pointer; }
+  .modal-actions .primary { background: var(--primary-blue); color: #fff; }
+  .modal-actions .secondary { background: #e2e8f0; color: #0f172a; }
+  .modal-actions .plain { background: none; color: var(--text-muted); min-height: 38px; }
+</style>
 </head>
 <body>
-    <div class="app-container">
-        <section class="card">
-            <h2 style="font-size: 1.1rem; color: var(--primary); margin-bottom: 4px;">Store Readiness Walk</h2>
-            <div class="form-grid-2">
-                <div class="input-field"><label>Store</label><input type="text" id="meta-store" oninput="saveData()"></div>
-                <div class="input-field"><label>Leader</label><input type="text" id="meta-leader" oninput="saveData()"></div>
-            </div>
-             <div class="form-grid-2">
-                <div class="input-field"><label>Date</label><input type="date" id="meta-date" oninput="saveData()"></div>
-                <div class="input-field"><label>Time</label><input type="time" id="meta-time" oninput="saveData()"></div>
-            </div>
-        </section>
+<header class="topbar">
+  <div class="brand">
+    <img src="assets/commissary-logo.png" alt="Commissary logo" onerror="this.remove()">
+    <div>
+      <div class="zone">Carolina Zone</div>
+      <h1>Store Readiness Walk</h1>
+      <div class="sub">Store Director Daily Operational Readiness Walk</div>
+    </div>
+  </div>
+</header>
 
-        <!-- Walk Rows -->
-        <section class="card">
-             <div class="section-header"><h3 class="section-title">B. WALK — Minimum Daily Readiness</h3></div>
-             <!-- Repeat for each walk item -->
-             <div class="walk-row" id="row-1">
-                 <div class="walk-name">1. Patron Readiness</div>
-                 <div class="walk-criteria">Exterior/entrance, carts, cleanliness, restrooms, front-end readiness, registers/SCO.</div>
-                 <div class="segmented-group">
-                    <label><input type="radio" name="area_1" value="A" onchange="setRating(1, 'A', 'Patron Readiness')"><div class="seg-btn">Acceptable</div></label>
-                    <label><input type="radio" name="area_1" value="AR" onchange="setRating(1, 'AR', 'Patron Readiness')"><div class="seg-btn">Action Req.</div></label>
-                    <label><input type="radio" name="area_1" value="IA" onchange="setRating(1, 'IA', 'Patron Readiness')"><div class="seg-btn">Immediate</div></label>
-                 </div>
-             </div>
-             <div class="walk-row" id="row-2">
-                <div class="walk-name">2. Product Availability & Merchandising</div>
-                <div class="walk-criteria">Obvious outs, recovery, promotional displays, endcaps, pricing/signage.</div>
-                <div class="segmented-group">
-                   <label><input type="radio" name="area_2" value="A" onchange="setRating(2, 'A', 'Merchandising')"><div class="seg-btn">Acceptable</div></label>
-                   <label><input type="radio" name="area_2" value="AR" onchange="setRating(2, 'AR', 'Merchandising')"><div class="seg-btn">Action Req.</div></label>
-                   <label><input type="radio" name="area_2" value="IA" onchange="setRating(2, 'IA', 'Merchandising')"><div class="seg-btn">Immediate</div></label>
-                </div>
-            </div>
-            <div class="walk-row" id="row-3">
-                <div class="walk-name">3. Fresh Department Readiness</div>
-                <div class="walk-criteria">Produce, meat, deli/bakery: stock, freshness/culling, rotation/dates, presentation.</div>
-                <div class="segmented-group">
-                   <label><input type="radio" name="area_3" value="A" onchange="setRating(3, 'A', 'Fresh Readiness')"><div class="seg-btn">Acceptable</div></label>
-                   <label><input type="radio" name="area_3" value="AR" onchange="setRating(3, 'AR', 'Fresh Readiness')"><div class="seg-btn">Action Req.</div></label>
-                   <label><input type="radio" name="area_3" value="IA" onchange="setRating(3, 'IA', 'Fresh Readiness')"><div class="seg-btn">Immediate</div></label>
-                </div>
-            </div>
-            <div class="walk-row" id="row-4">
-                <div class="walk-name">4. Food Safety / Sanitation / Employee Safety</div>
-                <div class="walk-criteria">Temps, sanitation, PPE, slip/trip hazards, exits, immediate safety concerns.</div>
-                <div class="segmented-group">
-                   <label><input type="radio" name="area_4" value="A" onchange="setRating(4, 'A', 'Safety & Sanitation')"><div class="seg-btn">Acceptable</div></label>
-                   <label><input type="radio" name="area_4" value="AR" onchange="setRating(4, 'AR', 'Safety & Sanitation')"><div class="seg-btn">Action Req.</div></label>
-                   <label><input type="radio" name="area_4" value="IA" onchange="setRating(4, 'IA', 'Safety & Sanitation')"><div class="seg-btn">Immediate</div></label>
-                </div>
-            </div>
-            <div class="walk-row" id="row-5">
-                <div class="walk-name">5. Facility & Equipment Readiness</div>
-                <div class="walk-criteria">Refrigeration, cases, registers/SCOs, critical equipment conditions.</div>
-                <div class="segmented-group">
-                   <label><input type="radio" name="area_5" value="A" onchange="setRating(5, 'A', 'Facility & Equipment')"><div class="seg-btn">Acceptable</div></label>
-                   <label><input type="radio" name="area_5" value="AR" onchange="setRating(5, 'AR', 'Facility & Equipment')"><div class="seg-btn">Action Req.</div></label>
-                   <label><input type="radio" name="area_5" value="IA" onchange="setRating(5, 'IA', 'Facility & Equipment')"><div class="seg-btn">Immediate</div></label>
-                </div>
-            </div>
-            <div class="walk-row" id="row-6">
-                <div class="walk-name">6. Workforce & Leadership Readiness</div>
-                <div class="walk-criteria">Management coverage, staffing/call-outs, workload balance, execution capacity.</div>
-                <div class="segmented-group">
-                   <label><input type="radio" name="area_6" value="A" onchange="setRating(6, 'A', 'Workforce')"><div class="seg-btn">Acceptable</div></label>
-                   <label><input type="radio" name="area_6" value="AR" onchange="setRating(6, 'AR', 'Workforce')"><div class="seg-btn">Action Req.</div></label>
-                   <label><input type="radio" name="area_6" value="IA" onchange="setRating(6, 'IA', 'Workforce')"><div class="seg-btn">Immediate</div></label>
-                </div>
-            </div>
-             <!-- End of repeating items -->
-        </section>
+<div class="app-container">
+  <div class="preview-banner">
+    <strong>Preview mode.</strong> Ratings and Part C work here, but saving, the signature, Copy, Email, and Save as PDF don't. Open the web link in Safari or Chrome, or tap the Readiness Walk icon on your Home Screen.
+  </div>
 
-        <section class="card">
-            <div class="section-header"><h3 class="section-title">C. ACT — Corrective Action Items</h3></div>
-            <div id="action-list-container"></div>
-            <button class="btn-add-action" onclick="addNewActionRow(null, '', '', 'Today COB')">+ Add Corrective Item Manually</button>
-        </section>
+  <section class="card">
+    <div class="title-row">
+      <h2 class="section-title">Header &amp; Administrative Information</h2>
+      <button type="button" class="btn-new" id="btn-new">Start New Walk</button>
+    </div>
+    <div class="saved-note" id="saved-note">Your entries save automatically on this device.</div>
+    <div class="input-field" style="margin-top:10px"><label for="meta-store">Store # / Name</label><input type="text" id="meta-store" data-save autocomplete="off"></div>
+    <div class="form-grid-2">
+      <div class="input-field"><label for="meta-date">Date</label><input type="date" id="meta-date" data-save></div>
+      <div class="input-field"><label for="meta-shift">Shift / Day</label><input type="text" id="meta-shift" data-save autocomplete="off"></div>
+    </div>
+    <div class="form-grid-2">
+      <div class="input-field"><label for="meta-leader">Store Director / Leader</label><input type="text" id="meta-leader" data-save autocomplete="off"></div>
+      <div class="input-field"><label for="meta-zm">Zone Manager</label><input type="text" id="meta-zm" data-save autocomplete="off"></div>
+    </div>
+    <div class="input-field" style="margin-top:10px"><label for="meta-time">Walk Window</label>
+      <div class="window"><input type="time" id="meta-time" data-save aria-label="Walk start"><span>to</span><input type="time" id="meta-time-end" data-save aria-label="Walk end"></div></div>
+    <div class="standard"><strong>Operational Standard:</strong> Conduct at the start of each operational day. Mark A (Acceptable), AR (Action Required), or IA (Immediate Action). Log all AR and IA exceptions in Section C for ownership, tracking, and verification.</div>
+  </section>
+
+  <section class="card">
+    <div class="section-header">
+      <h3 class="section-title">A. KNOW — Known Conditions Before the Walk</h3>
+      <div class="section-sub">Review pre-walk operational data, shift reports, and carryover items before stepping onto the sales floor.</div>
+    </div>
+    <span class="field-label" style="margin-top:0">Pre-Walk Operational Checklist</span>
+    <div class="check-grid"><label class="check"><input type="checkbox" id="know-1" data-save><span class="check-box" aria-hidden="true"></span><span class="check-text">Staffing &amp; Management Coverage</span></label><label class="check"><input type="checkbox" id="know-2" data-save><span class="check-box" aria-hidden="true"></span><span class="check-text">Refrigeration &amp; Facility Alarms</span></label><label class="check"><input type="checkbox" id="know-3" data-save><span class="check-box" aria-hidden="true"></span><span class="check-text">Inbound Deliveries / Receiving Schedule</span></label><label class="check"><input type="checkbox" id="know-4" data-save><span class="check-box" aria-hidden="true"></span><span class="check-text">Product Availability &amp; Known Outs</span></label><label class="check"><input type="checkbox" id="know-5" data-save><span class="check-box" aria-hidden="true"></span><span class="check-text">Prior-Day Carryover Issues</span></label><label class="check"><input type="checkbox" id="know-6" data-save><span class="check-box" aria-hidden="true"></span><span class="check-text">Weather / Promo Events / Special Conditions</span></label></div>
+    <label class="field-label" for="know-notes">Known Concerns / Operational Focus for Today</label>
+    <textarea id="know-notes" data-save placeholder="Optional"></textarea>
+  </section>
+
+  <section class="card">
+    <div class="section-header">
+      <h3 class="section-title">B. WALK — Minimum Daily Readiness</h3>
+      <div class="section-sub">Score each operational area. Action Req. or Immediate opens an item in Section C.</div>
+    </div>
+      <div class="walk-row" id="row-1">
+        <div class="walk-name">1. Patron Readiness</div>
+        <div class="walk-criteria">Exterior/entrance, carts, cleanliness, restrooms, front-end readiness, registers/SCO.</div>
+        <div class="segmented-group"><label><input type="radio" name="area_1" value="A"><span class="seg-btn g">Acceptable</span></label><label><input type="radio" name="area_1" value="AR"><span class="seg-btn y">Action Req.</span></label><label><input type="radio" name="area_1" value="IA"><span class="seg-btn r">Immediate</span></label></div>
+      </div>
+      <div class="walk-row" id="row-2">
+        <div class="walk-name">2. Product Availability &amp; Merchandising</div>
+        <div class="walk-criteria">Obvious outs, recovery, promotional displays, endcaps, pricing/signage.</div>
+        <div class="segmented-group"><label><input type="radio" name="area_2" value="A"><span class="seg-btn g">Acceptable</span></label><label><input type="radio" name="area_2" value="AR"><span class="seg-btn y">Action Req.</span></label><label><input type="radio" name="area_2" value="IA"><span class="seg-btn r">Immediate</span></label></div>
+      </div>
+      <div class="walk-row" id="row-3">
+        <div class="walk-name">3. Fresh Department Readiness</div>
+        <div class="walk-criteria">Produce, meat, deli/bakery: stock, freshness/culling, rotation/dates, presentation.</div>
+        <div class="segmented-group"><label><input type="radio" name="area_3" value="A"><span class="seg-btn g">Acceptable</span></label><label><input type="radio" name="area_3" value="AR"><span class="seg-btn y">Action Req.</span></label><label><input type="radio" name="area_3" value="IA"><span class="seg-btn r">Immediate</span></label></div>
+      </div>
+      <div class="walk-row" id="row-4">
+        <div class="walk-name">4. Food Safety / Sanitation / Employee Safety</div>
+        <div class="walk-criteria">Temps, sanitation, PPE, slip/trip hazards, exits, immediate safety concerns.</div>
+        <div class="segmented-group"><label><input type="radio" name="area_4" value="A"><span class="seg-btn g">Acceptable</span></label><label><input type="radio" name="area_4" value="AR"><span class="seg-btn y">Action Req.</span></label><label><input type="radio" name="area_4" value="IA"><span class="seg-btn r">Immediate</span></label></div>
+      </div>
+      <div class="walk-row" id="row-5">
+        <div class="walk-name">5. Facility &amp; Equipment Readiness</div>
+        <div class="walk-criteria">Refrigeration, cases, registers/SCOs, critical equipment conditions.</div>
+        <div class="segmented-group"><label><input type="radio" name="area_5" value="A"><span class="seg-btn g">Acceptable</span></label><label><input type="radio" name="area_5" value="AR"><span class="seg-btn y">Action Req.</span></label><label><input type="radio" name="area_5" value="IA"><span class="seg-btn r">Immediate</span></label></div>
+      </div>
+      <div class="walk-row" id="row-6">
+        <div class="walk-name">6. Workforce &amp; Leadership Readiness</div>
+        <div class="walk-criteria">Management coverage, staffing/call-outs, workload balance, execution capacity.</div>
+        <div class="segmented-group"><label><input type="radio" name="area_6" value="A"><span class="seg-btn g">Acceptable</span></label><label><input type="radio" name="area_6" value="AR"><span class="seg-btn y">Action Req.</span></label><label><input type="radio" name="area_6" value="IA"><span class="seg-btn r">Immediate</span></label></div>
+      </div>
+      <div class="walk-row" id="row-7">
+        <div class="walk-name">7. Corrective Action Follow-Through</div>
+        <div class="walk-criteria">Yesterday's open exceptions physically verified; new gaps assigned immediately with an owner and target completion time.</div>
+        <div class="segmented-group"><label><input type="radio" name="area_7" value="A"><span class="seg-btn g">Acceptable</span></label><label><input type="radio" name="area_7" value="AR"><span class="seg-btn y">Action Req.</span></label><label><input type="radio" name="area_7" value="IA"><span class="seg-btn r">Immediate</span></label></div>
+      </div>
+  </section>
+
+  <section class="card">
+    <div class="section-header">
+      <h3 class="section-title">C. ACT — Corrective Action Items</h3>
+      <div class="section-sub">Mandatory tracking for every item marked AR or IA above.</div>
+    </div>
+    <div class="empty-note">No deficiencies logged. Rate an area Action Req. or Immediate and its action item opens here.</div>
+      <div class="action-card" id="act-1">
+        <div class="action-card-top"><span><span class="tag ar">AR</span><span class="tag ia">IA</span>Patron Readiness</span><button type="button" class="btn-remove" data-clear="act-1" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="act-1-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="act-1-owner" data-save placeholder="Assigned owner" value="Dept Lead" aria-label="Assigned owner">
+          <input type="text" id="act-1-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="act-1-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_act-1" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_act-1" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+      <div class="action-card" id="act-2">
+        <div class="action-card-top"><span><span class="tag ar">AR</span><span class="tag ia">IA</span>Merchandising</span><button type="button" class="btn-remove" data-clear="act-2" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="act-2-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="act-2-owner" data-save placeholder="Assigned owner" value="Dept Lead" aria-label="Assigned owner">
+          <input type="text" id="act-2-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="act-2-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_act-2" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_act-2" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+      <div class="action-card" id="act-3">
+        <div class="action-card-top"><span><span class="tag ar">AR</span><span class="tag ia">IA</span>Fresh Readiness</span><button type="button" class="btn-remove" data-clear="act-3" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="act-3-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="act-3-owner" data-save placeholder="Assigned owner" value="Dept Lead" aria-label="Assigned owner">
+          <input type="text" id="act-3-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="act-3-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_act-3" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_act-3" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+      <div class="action-card" id="act-4">
+        <div class="action-card-top"><span><span class="tag ar">AR</span><span class="tag ia">IA</span>Safety &amp; Sanitation</span><button type="button" class="btn-remove" data-clear="act-4" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="act-4-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="act-4-owner" data-save placeholder="Assigned owner" value="Dept Lead" aria-label="Assigned owner">
+          <input type="text" id="act-4-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="act-4-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_act-4" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_act-4" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+      <div class="action-card" id="act-5">
+        <div class="action-card-top"><span><span class="tag ar">AR</span><span class="tag ia">IA</span>Facility &amp; Equipment</span><button type="button" class="btn-remove" data-clear="act-5" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="act-5-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="act-5-owner" data-save placeholder="Assigned owner" value="Dept Lead" aria-label="Assigned owner">
+          <input type="text" id="act-5-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="act-5-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_act-5" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_act-5" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+      <div class="action-card" id="act-6">
+        <div class="action-card-top"><span><span class="tag ar">AR</span><span class="tag ia">IA</span>Workforce</span><button type="button" class="btn-remove" data-clear="act-6" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="act-6-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="act-6-owner" data-save placeholder="Assigned owner" value="Dept Lead" aria-label="Assigned owner">
+          <input type="text" id="act-6-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="act-6-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_act-6" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_act-6" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+      <div class="action-card" id="act-7">
+        <div class="action-card-top"><span><span class="tag ar">AR</span><span class="tag ia">IA</span>Corrective Action Follow-Through</span><button type="button" class="btn-remove" data-clear="act-7" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="act-7-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="act-7-owner" data-save placeholder="Assigned owner" value="Dept Lead" aria-label="Assigned owner">
+          <input type="text" id="act-7-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="act-7-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_act-7" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_act-7" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+
+    <div class="extras" id="extras">
+      <div class="action-card extra" id="extra-1">
+        <div class="action-card-top"><span>Additional Item</span><button type="button" class="btn-remove" data-clear="extra-1" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="extra-1-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="extra-1-owner" data-save placeholder="Assigned owner" aria-label="Assigned owner">
+          <input type="text" id="extra-1-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="extra-1-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_extra-1" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_extra-1" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+      <div class="action-card extra" id="extra-2">
+        <div class="action-card-top"><span>Additional Item</span><button type="button" class="btn-remove" data-clear="extra-2" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="extra-2-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="extra-2-owner" data-save placeholder="Assigned owner" aria-label="Assigned owner">
+          <input type="text" id="extra-2-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="extra-2-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_extra-2" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_extra-2" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+      <div class="action-card extra" id="extra-3">
+        <div class="action-card-top"><span>Additional Item</span><button type="button" class="btn-remove" data-clear="extra-3" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="extra-3-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="extra-3-owner" data-save placeholder="Assigned owner" aria-label="Assigned owner">
+          <input type="text" id="extra-3-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="extra-3-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_extra-3" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_extra-3" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+      <div class="action-card extra" id="extra-4">
+        <div class="action-card-top"><span>Additional Item</span><button type="button" class="btn-remove" data-clear="extra-4" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="extra-4-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="extra-4-owner" data-save placeholder="Assigned owner" aria-label="Assigned owner">
+          <input type="text" id="extra-4-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="extra-4-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_extra-4" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_extra-4" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+      <div class="action-card extra" id="extra-5">
+        <div class="action-card-top"><span>Additional Item</span><button type="button" class="btn-remove" data-clear="extra-5" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="extra-5-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="extra-5-owner" data-save placeholder="Assigned owner" aria-label="Assigned owner">
+          <input type="text" id="extra-5-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="extra-5-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_extra-5" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_extra-5" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+      <div class="action-card extra" id="extra-6">
+        <div class="action-card-top"><span>Additional Item</span><button type="button" class="btn-remove" data-clear="extra-6" aria-label="Clear this item">&times;</button></div>
+        <input type="text" class="issue" id="extra-6-issue" data-save placeholder="Issue description &amp; required action" aria-label="Issue description and required action">
+        <div class="form-grid-2">
+          <input type="text" id="extra-6-owner" data-save placeholder="Assigned owner" aria-label="Assigned owner">
+          <input type="text" id="extra-6-due" data-save placeholder="Target due" value="Today COB" aria-label="Target due">
+        </div>
+        <div class="form-grid-2 verify-row">
+          <input type="text" id="extra-6-verify" data-save placeholder="Verification sign-off" aria-label="Verification sign-off">
+          <div class="esc"><span class="esc-label">Escalated?</span><div class="segmented-group two"><label><input type="radio" name="esc_extra-6" value="Y"><span class="seg-btn y">Yes</span></label><label><input type="radio" name="esc_extra-6" value="N"><span class="seg-btn b">No</span></label></div></div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn-add-action" id="btn-add">+ Add Corrective Item Manually</button>
+  </section>
+
+  <section class="card">
+    <div class="section-header"><h3 class="section-title">D. Store Director Readiness Summary</h3></div>
+    <span class="field-label" style="margin-top:0">Overall Store Readiness</span>
+    <div class="segmented-group stack"><label><input type="radio" name="d_overall" value="R"><span class="seg-btn g">Ready</span></label><label><input type="radio" name="d_overall" value="RAP"><span class="seg-btn y">Ready — Actions in Progress</span></label><label><input type="radio" name="d_overall" value="SOC"><span class="seg-btn r">Significant Operational Concern</span></label></div>
+    <label class="field-label" for="d-priority">Top Priority / Critical Focus</label>
+    <input type="text" id="d-priority" data-save>
+    <span class="field-label">Zone Manager Notification</span>
+    <div class="segmented-group two"><label><input type="radio" name="d_zm" value="NR"><span class="seg-btn b">Not Required</span></label><label><input type="radio" name="d_zm" value="CE"><span class="seg-btn y">Completed / Escalated</span></label></div>
+    <span class="field-label">Carryover Open Items</span>
+    <div class="segmented-group two"><label><input type="radio" name="d_carry" value="NONE"><span class="seg-btn g">None (All Verified Closed)</span></label><label><input type="radio" name="d_carry" value="YES"><span class="seg-btn y">Yes (Transferred to Tomorrow)</span></label></div>
+
+    <div class="sig-block">
+      <span class="field-label">Store Director Signature</span>
+      <div class="sig-wrap" id="sig-wrap"><canvas id="sig" aria-label="Signature pad"></canvas><div class="sig-hint">Sign here with your finger</div></div>
+      <div class="sig-actions"><span>Date / time is added when you save the PDF.</span><button type="button" class="btn-link" id="btn-sig-clear">Clear signature</button></div>
     </div>
 
-    <div class="bottom-bar">
-        <button class="btn-bottom copy" onclick="copyReportText()">Copy Report</button>
-        <button class="btn-bottom save" onclick="emailReport()">Email Report</button>
+    <details class="defs">
+      <summary>Status Definitions Reference</summary>
+      <ul>
+        <li><strong>A — Acceptable:</strong> Meets established operational standard. No follow-up intervention required.</li>
+        <li><strong>AR — Action Required:</strong> Operational deficiency identified. Requires an assigned owner, target due time, and physical verification.</li>
+        <li><strong>IA — Immediate Action:</strong> Critical hazard, food safety risk, major customer-flow stoppage, or security condition requiring immediate leader intervention.</li>
+      </ul>
+    </details>
+  </section>
+</div>
+
+<div class="bottom-bar">
+  <div class="bottom-inner">
+    <button type="button" class="btn-bottom copy" id="btn-copy">Copy Report</button>
+    <button type="button" class="btn-bottom email" id="btn-email">Email Report</button>
+    <button type="button" class="btn-bottom save" id="btn-pdf">Save as PDF</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="modal" id="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdf-modal-title">
+  <div class="modal-box">
+    <h3 id="pdf-modal-title">Your PDF is ready ✅</h3>
+    <p id="pdf-name"></p>
+    <p id="pdf-help"></p>
+    <div class="modal-actions">
+      <button type="button" class="primary" id="btn-pdf-share">Share / Save PDF</button>
+      <button type="button" class="secondary" id="btn-pdf-view">View PDF</button>
+      <button type="button" class="plain" id="btn-pdf-close">Close</button>
     </div>
+  </div>
+</div>
 
-    <script>
-        let actionsState = [];
+<div class="modal" id="copy-modal" role="dialog" aria-modal="true" aria-labelledby="copy-modal-title">
+  <div class="modal-box">
+    <h3 id="copy-modal-title">Walk report</h3>
+    <p>Press and hold in the box, tap Select All, then Copy.</p>
+    <textarea id="copy-text" readonly></textarea>
+    <div class="modal-actions">
+      <button type="button" class="primary" id="btn-share-text">Share</button>
+      <button type="button" class="plain" id="btn-close-modal">Close</button>
+    </div>
+  </div>
+</div>
 
-        // --- Core Functions ---
-        window.addEventListener('DOMContentLoaded', () => {
-            const now = new Date();
-            const dateEl = document.getElementById('meta-date');
-            const timeEl = document.getElementById('meta-time');
-            if (dateEl && !dateEl.value) dateEl.value = now.toISOString().split('T')[0];
-            if (timeEl && !timeEl.value) timeEl.value = now.toTimeString().slice(0, 5);
-            loadData();
-        });
+<script src="vendor/pdf-lib.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  var KEY = 'SD_WALK_STATE_V3';
+  var OLD_KEY = 'SD_WALK_STATE';
+  var TEMPLATE_URL = 'assets/readiness-walk-form.pdf';
+  var N_AREAS = 7, EXTRAS = 6;
+  var SHORT = ['Patron Readiness', 'Merchandising', 'Fresh Readiness', 'Safety & Sanitation',
+               'Facility & Equipment', 'Workforce', 'Corrective Action Follow-Through'];
+  var FULL = ['Patron Readiness', 'Product Availability & Merchandising', 'Fresh Department Readiness',
+              'Food Safety / Sanitation / Employee Safety', 'Facility & Equipment Readiness',
+              'Workforce & Leadership Readiness', 'Corrective Action Follow-Through'];
+  var KNOW = ['Staffing & Management Coverage', 'Refrigeration & Facility Alarms', 'Inbound Deliveries / Receiving Schedule',
+              'Product Availability & Known Outs', 'Prior-Day Carryover Issues', 'Weather / Promo Events / Special Conditions'];
+  var LABEL = { A: 'Acceptable', AR: 'Action Required', IA: 'Immediate Action' };
+  var D_OVERALL = { R: 'Ready', RAP: 'Ready — Actions in Progress', SOC: 'Significant Operational Concern' };
+  var D_ZM = { NR: 'Not Required', CE: 'Completed / Escalated' };
+  var D_CARRY = { NONE: 'None (All Verified Closed)', YES: 'Yes (Transferred to tomorrow\'s Section A checklist)' };
+  var KEEP_ON_NEW = ['meta-store', 'meta-leader', 'meta-zm'];
 
-        function setRating(areaId, rating, areaName) {
-            const row = document.getElementById('row-' + areaId);
-            row.classList.remove('status-a', 'status-ar', 'status-ia');
-            if (rating === 'A') row.classList.add('status-a');
-            if (rating === 'AR') row.classList.add('status-ar');
-            if (rating === 'IA') row.classList.add('status-ia');
+  var $ = function (id) { return document.getElementById(id); };
+  var each = function (list, fn) { Array.prototype.forEach.call(list, fn); };
+  function val(id) { var el = $(id); return el ? String(el.value || '').trim() : ''; }
+  function radio(name) { var r = document.querySelector('input[name="' + name + '"]:checked'); return r ? r.value : ''; }
+  function rating(i) { return radio('area_' + i); }
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function usDate(iso) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ''); return m ? m[2] + '/' + m[3] + '/' + m[1] : (iso || ''); }
 
-            if (rating === 'AR' || rating === 'IA') {
-                const existing = actionsState.find(a => a.areaId === areaId);
-                if (!existing) {
-                    addNewActionRow(areaId, `[${rating}] ${areaName}: `, 'Dept Lead', 'Today COB');
-                }
-            }
-            saveData();
+  var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  var canStore = (function () {
+    try { localStorage.setItem('__t', '1'); localStorage.removeItem('__t'); return true; } catch (e) { return false; }
+  })();
+  if (!canStore) {
+    $('saved-note').textContent = 'This browser is blocking saving. Save a PDF before closing.';
+    $('saved-note').style.color = 'var(--danger-red)';
+  }
+
+  function stampNow() {
+    var now = new Date();
+    $('meta-date').value = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+    $('meta-time').value = pad(now.getHours()) + ':' + pad(now.getMinutes());
+    if (!val('meta-shift')) $('meta-shift').value = now.toLocaleDateString('en-US', { weekday: 'long' });
+  }
+
+  // ---------------- Signature pad ----------------
+  var sig = { canvas: $('sig'), data: '', drawing: false, last: null };
+  function sigSize() {
+    var c = sig.canvas, r = c.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    if (!r.width) return;
+    c.width = Math.round(r.width * dpr); c.height = Math.round(r.height * dpr);
+    var ctx = c.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.lineWidth = 2.2; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#0f2a6b';
+    if (sig.data) {
+      var img = new Image();
+      img.onload = function () { ctx.drawImage(img, 0, 0, r.width, r.height); };
+      img.src = sig.data;
+    }
+  }
+  function sigPoint(e) { var r = sig.canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+  sig.canvas.addEventListener('pointerdown', function (e) {
+    e.preventDefault(); sig.drawing = true; sig.last = sigPoint(e);
+    try { sig.canvas.setPointerCapture(e.pointerId); } catch (x) {}
+    var ctx = sig.canvas.getContext('2d'); ctx.beginPath(); ctx.arc(sig.last.x, sig.last.y, 1.1, 0, Math.PI * 2); ctx.fillStyle = '#0f2a6b'; ctx.fill();
+    $('sig-wrap').classList.add('signed');
+  });
+  sig.canvas.addEventListener('pointermove', function (e) {
+    if (!sig.drawing) return;
+    e.preventDefault();
+    var p = sigPoint(e), ctx = sig.canvas.getContext('2d');
+    ctx.beginPath(); ctx.moveTo(sig.last.x, sig.last.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+    sig.last = p;
+  });
+  function sigEnd() {
+    if (!sig.drawing) return;
+    sig.drawing = false;
+    sig.data = sig.canvas.toDataURL('image/png');
+    save();
+  }
+  sig.canvas.addEventListener('pointerup', sigEnd);
+  sig.canvas.addEventListener('pointercancel', sigEnd);
+  sig.canvas.addEventListener('pointerleave', sigEnd);
+  function sigClear() {
+    sig.data = '';
+    var c = sig.canvas; c.getContext('2d').clearRect(0, 0, c.width, c.height);
+    $('sig-wrap').classList.remove('signed');
+  }
+  var resizeTimer;
+  window.addEventListener('resize', function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(sigSize, 150); });
+
+  // ---------------- Save / load ----------------
+  function collectState() {
+    var s = { v: 3, text: {}, checks: {}, radios: {}, shown: [], sig: sig.data };
+    each(document.querySelectorAll('input[data-save], textarea[data-save]'), function (el) {
+      if (el.type === 'checkbox') s.checks[el.id] = el.checked; else s.text[el.id] = el.value;
+    });
+    each(document.querySelectorAll('input[type="radio"]:checked'), function (r) { s.radios[r.name] = r.value; });
+    each(document.querySelectorAll('.action-card.extra.shown'), function (c) { s.shown.push(c.id); });
+    return s;
+  }
+  function applyState(s) {
+    Object.keys(s.text || {}).forEach(function (id) { var el = $(id); if (el) el.value = s.text[id]; });
+    Object.keys(s.checks || {}).forEach(function (id) { var el = $(id); if (el) el.checked = !!s.checks[id]; });
+    Object.keys(s.radios || {}).forEach(function (n) {
+      var r = document.querySelector('input[name="' + n + '"][value="' + s.radios[n] + '"]'); if (r) r.checked = true;
+    });
+    (s.shown || []).forEach(function (id) { var c = $(id); if (c) c.classList.add('shown'); });
+    sig.data = s.sig || '';
+    $('sig-wrap').classList.toggle('signed', !!sig.data);
+  }
+  function save() {
+    if (!canStore) return;
+    try { localStorage.setItem(KEY, JSON.stringify(collectState())); } catch (e) {}
+  }
+  // Brings over a walk in progress from the earlier version of this app
+  function migrateOld(raw) {
+    var old = JSON.parse(raw), s = { text: {}, radios: {}, shown: [] };
+    var m = old.meta || {};
+    if (m.store) s.text['meta-store'] = m.store;
+    if (m.leader) s.text['meta-leader'] = m.leader;
+    if (m.date) s.text['meta-date'] = m.date;
+    if (m.time) s.text['meta-time'] = m.time;
+    Object.keys(old.ratings || {}).forEach(function (i) { s.radios['area_' + i] = old.ratings[i]; });
+    var k = 1;
+    (old.actions || []).forEach(function (a) {
+      var issue = String(a.issue || '').replace(/^\[(AR|IA)\][^:]*:\s*/, '');
+      var area = parseInt(a.areaId, 10);
+      var cid = (area >= 1 && area <= 6 && !s.text['act-' + area + '-issue']) ? 'act-' + area : (k <= EXTRAS ? 'extra-' + (k++) : null);
+      if (!cid) return;
+      s.text[cid + '-issue'] = issue;
+      if (a.owner) s.text[cid + '-owner'] = a.owner;
+      if (a.due) s.text[cid + '-due'] = a.due;
+      if (cid.indexOf('extra') === 0) s.shown.push(cid);
+    });
+    return s;
+  }
+  function load() {
+    if (!canStore) return false;
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) { applyState(JSON.parse(raw)); return true; }
+      var old = localStorage.getItem(OLD_KEY);
+      if (old) { applyState(migrateOld(old)); save(); return true; }
+    } catch (e) {}
+    return false;
+  }
+
+  function resetAll() {
+    var keep = {};
+    KEEP_ON_NEW.forEach(function (id) { keep[id] = $(id).value; });
+    each(document.querySelectorAll('input[data-save], textarea[data-save]'), function (el) {
+      if (el.type === 'checkbox') el.checked = false; else el.value = el.defaultValue;
+    });
+    each(document.querySelectorAll('input[type="radio"]'), function (r) { r.checked = false; });
+    each(document.querySelectorAll('.action-card.extra'), function (c) { c.classList.remove('shown'); });
+    KEEP_ON_NEW.forEach(function (id) { $(id).value = keep[id]; });
+    sigClear();
+    stampNow();
+    save();
+    window.scrollTo(0, 0);
+    toast('New walk started. Store, leader, and zone manager were kept.');
+  }
+
+  function clearCard(cid) {
+    var card = $(cid); if (!card) return;
+    each(card.querySelectorAll('input[type="text"]'), function (el) { el.value = el.defaultValue; });
+    each(card.querySelectorAll('input[type="radio"]'), function (r) { r.checked = false; });
+    card.classList.remove('shown');
+    var m = /^act-(\d)$/.exec(cid);
+    if (m) each(document.querySelectorAll('input[name="area_' + m[1] + '"]'), function (r) { r.checked = false; });
+    save();
+  }
+
+  function addExtra() {
+    for (var k = 1; k <= EXTRAS; k++) {
+      var c = $('extra-' + k);
+      if (!(c.classList.contains('shown') || val('extra-' + k + '-issue'))) {
+        c.classList.add('shown'); save();
+        $('extra-' + k + '-issue').focus();
+        return;
+      }
+    }
+    toast('All ' + EXTRAS + ' additional item slots are in use.');
+  }
+
+  // ---------------- Report content ----------------
+  function collectItems() {
+    var items = [];
+    for (var j = 1; j <= N_AREAS; j++) {
+      var r = rating(j);
+      if (r === 'AR' || r === 'IA') items.push({ tag: r, title: SHORT[j - 1], cid: 'act-' + j });
+    }
+    for (var k = 1; k <= EXTRAS; k++) {
+      if (val('extra-' + k + '-issue')) items.push({ tag: '', title: 'Additional', cid: 'extra-' + k });
+    }
+    return items.map(function (it) {
+      return { tag: it.tag, title: it.title, issue: val(it.cid + '-issue'), owner: val(it.cid + '-owner'),
+               due: val(it.cid + '-due'), verify: val(it.cid + '-verify'), esc: radio('esc_' + it.cid) };
+    });
+  }
+
+  function buildReportText() {
+    var t = 'STORE DIRECTOR DAILY OPERATIONAL READINESS WALK\n';
+    t += 'Store: ' + val('meta-store') + '\n';
+    t += 'Store Director / Leader: ' + val('meta-leader') + '\n';
+    t += 'Zone Manager: ' + val('meta-zm') + '\n';
+    t += 'Date: ' + usDate(val('meta-date')) + '   Walk: ' + val('meta-time') + (val('meta-time-end') ? ' to ' + val('meta-time-end') : '') + '   Shift/Day: ' + val('meta-shift') + '\n';
+
+    var known = KNOW.filter(function (_, i) { return $('know-' + (i + 1)).checked; });
+    t += '\n--- A. KNOW ---\n';
+    t += 'Reviewed: ' + (known.length ? known.join('; ') : 'None checked') + '\n';
+    if (val('know-notes')) t += 'Known concerns / focus: ' + val('know-notes') + '\n';
+
+    t += '\n--- B. WALK ---\n';
+    for (var i = 1; i <= N_AREAS; i++) t += i + '. ' + FULL[i - 1] + ': ' + (LABEL[rating(i)] || 'Not Rated') + '\n';
+
+    var items = collectItems();
+    t += '\n--- C. CORRECTIVE ACTIONS ---\n';
+    if (!items.length) t += 'No corrective actions logged.\n';
+    items.forEach(function (it, n) {
+      t += (n + 1) + '. ' + (it.tag ? '[' + it.tag + '] ' : '') + it.title + ': ' + (it.issue || '(no detail entered)') + '\n';
+      t += '   Owner: ' + it.owner + ' | Due: ' + it.due;
+      if (it.verify) t += ' | Verified: ' + it.verify;
+      if (it.esc) t += ' | Escalated: ' + (it.esc === 'Y' ? 'Yes' : 'No');
+      t += '\n';
+    });
+
+    t += '\n--- D. SUMMARY ---\n';
+    t += 'Overall readiness: ' + (D_OVERALL[radio('d_overall')] || 'Not marked') + '\n';
+    if (val('d-priority')) t += 'Top priority: ' + val('d-priority') + '\n';
+    t += 'Zone Manager notification: ' + (D_ZM[radio('d_zm')] || 'Not marked') + '\n';
+    t += 'Carryover open items: ' + (D_CARRY[radio('d_carry')] || 'Not marked') + '\n';
+    return t;
+  }
+
+  function fileStem() {
+    var store = val('meta-store').replace(/[^A-Za-z0-9 _-]/g, '').replace(/\s+/g, '_') || 'Store';
+    return 'Readiness_Walk_' + store + '_' + (val('meta-date') || 'date');
+  }
+
+  // ---------------- Toast / modals ----------------
+  var toastTimer;
+  function toast(msg) {
+    var el = $('toast'); el.textContent = msg; el.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.classList.remove('show'); }, 2800);
+  }
+  function openCopyModal(text) {
+    $('copy-text').value = text;
+    $('btn-share-text').style.display = navigator.share ? '' : 'none';
+    $('copy-modal').classList.add('open');
+  }
+
+  // ---------------- Copy / Email ----------------
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '0'; ta.style.opacity = '0'; ta.style.fontSize = '16px';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);
+    var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    return ok;
+  }
+  function copyReport() {
+    save();
+    var text = buildReportText();
+    var done = function () { toast('Report copied. Paste it into an email or text.'); };
+    var fallback = function () { if (legacyCopy(text)) done(); else openCopyModal(text); };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, fallback);
+    else fallback();
+  }
+  function emailReport() {
+    save();
+    var subject = 'Store Readiness Walk - ' + (val('meta-store') || 'Store') + (val('meta-date') ? ' - ' + usDate(val('meta-date')) : '');
+    window.location.href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(buildReportText());
+  }
+
+  // ---------------- PDF: fill the official form ----------------
+  var templateP = null;
+  function getTemplate() {
+    if (!templateP) {
+      templateP = fetch(TEMPLATE_URL, { cache: 'no-cache' }).then(function (r) {
+        if (!r.ok) throw new Error('template ' + r.status);
+        return r.arrayBuffer();
+      });
+      templateP.catch(function () { templateP = null; });
+    }
+    return templateP;
+  }
+
+  // Positions measured from the official form (points, measured from the TOP of a letter page)
+  var F = {
+    pageH: 792,
+    header: {
+      store: { x: 175, top: 188.4, w: 165 }, date: { x: 414, top: 188.4, w: 78 },
+      leader: { x: 175, top: 205.9, w: 165 }, winStart: { x: 412, top: 205.9, w: 32 }, winEnd: { x: 454.5, top: 205.9, w: 32 },
+      zm: { x: 175, top: 223.5, w: 165 }, shift: { x: 414, top: 223.5, w: 78 }
+    },
+    know: [[81.8, 338.6], [223.2, 338.6], [352.7, 338.6], [81.8, 356.2], [221.2, 356.2], [359.1, 356.2]],
+    knownNotes: { line1: { x: 246, top: 384.2, w: 290 }, line2: { x: 76, top: 393.3, w: 460 } },
+    walkTops: [502.6, 541.8, 581.0, 620.2, 654.3, 687.8],     // page 1, areas 1-6
+    walk7Top: 126.2,                                        // page 2, area 7
+    walkX: { A: 411.4, AR: 459.8, IA: 506.9 },
+    c: { rowTop: 220.5, rowH: 17.5, rows: 5, issue: [104.5, 131], owner: [240.5, 63], due: [308, 44], verify: [356.5, 75],
+         yes: 439.3, no: 465.7, boxDy: 4.2 },
+    d: { overall: { R: 132.8, RAP: 183.2, SOC: 312.8 }, overallTop: 386.6,
+         priority: { x: 135, top: 431.0, top1: 421.6, w: 398 },
+         zm: { NR: 132.8, CE: 206.9 }, zmTop: 465.0,
+         carry: { NONE: 132.8, YES: 249.8 }, carryTop: 498.5,
+         sig: { x: 168, bottomTop: 619.5, w: 190, h: 24 }, sigDate: { x: 430, top: 617.0, w: 78 } }
+  };
+
+  function fillPdf() {
+    var PL = window.PDFLib;
+    if (!PL) return Promise.reject(new Error('PDF tool did not load'));
+    return getTemplate().then(function (bytes) {
+      return PL.PDFDocument.load(bytes);
+    }).then(function (pdf) {
+      return trimmedSignature().then(function (png) {
+        return Promise.all([pdf.embedFont(PL.StandardFonts.Helvetica), pdf.embedFont(PL.StandardFonts.HelveticaBold),
+                            png ? pdf.embedPng(png) : null]);
+      }).then(function (r) {
+        return draw(pdf, PL, r[0], r[1], r[2]);
+      });
+    });
+  }
+
+  // Crops the signature to just the ink so it fills the signature line on the form
+  function trimmedSignature() {
+    if (!sig.data) return Promise.resolve(null);
+    return new Promise(function (resolve) {
+      var img = new Image();
+      img.onload = function () {
+        var c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+        var ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0);
+        var d = ctx.getImageData(0, 0, c.width, c.height).data, x0 = c.width, y0 = c.height, x1 = -1, y1 = -1;
+        for (var y = 0; y < c.height; y++) for (var x = 0; x < c.width; x++) {
+          if (d[(y * c.width + x) * 4 + 3] > 10) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
         }
+        if (x1 < 0) { resolve(null); return; }
+        var padPx = 4; x0 = Math.max(0, x0 - padPx); y0 = Math.max(0, y0 - padPx);
+        x1 = Math.min(c.width - 1, x1 + padPx); y1 = Math.min(c.height - 1, y1 + padPx);
+        var o = document.createElement('canvas'); o.width = x1 - x0 + 1; o.height = y1 - y0 + 1;
+        o.getContext('2d').drawImage(c, x0, y0, o.width, o.height, 0, 0, o.width, o.height);
+        resolve(o.toDataURL('image/png'));
+      };
+      img.onerror = function () { resolve(null); };
+      img.src = sig.data;
+    });
+  }
 
-        function addNewActionRow(areaId, issue = '', owner = '', due = 'Today COB') {
-            const id = 'act_' + Date.now();
-            const newAction = { id, areaId, issue, owner, due };
-            actionsState.push(newAction);
-            renderActions();
-            saveData();
-        }
+  function draw(pdf, PL, font, bold, sigImg) {
+    var pages = pdf.getPages(), p1 = pages[0], p2 = pages[1];
+    var INK = PL.rgb(0.05, 0.16, 0.48);
+    var Y = function (top) { return F.pageH - top; };
+    var overflow = { items: [], notes: false, priority: false, cut: [] };
 
-        function removeActionRow(id) {
-            actionsState = actionsState.filter(a => a.id !== id);
-            renderActions();
-            saveData();
-        }
+    function clean(s) {
+      s = String(s || '').replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+      var out = '';
+      for (var i = 0; i < s.length; i++) {
+        var ch = s[i];
+        try { font.widthOfTextAtSize(ch, 10); bold.widthOfTextAtSize(ch, 10); out += ch; } catch (e) { out += '?'; }
+      }
+      return out;
+    }
+    function width(t, size, f) { return (f || font).widthOfTextAtSize(t, size); }
+    // Writes one line, shrinking to fit; returns true if the text had to be cut short
+    function fit(page, text, x, top, maxW, size, minSize, f) {
+      text = clean(text); if (!text) return false;
+      size = size || 8; minSize = minSize || 5.5;
+      while (size > minSize && width(text, size, f) > maxW) size -= 0.25;
+      var cut = false;
+      if (width(text, size, f) > maxW) {
+        cut = true;
+        while (text.length > 1 && width(text + '…', size, f) > maxW) text = text.slice(0, -1);
+        text = text.replace(/\s+$/, '') + '…';
+      }
+      page.drawText(text, { x: x, y: Y(top), size: size, font: f || font, color: INK });
+      return cut;
+    }
+    function wrap(text, maxW, size) {
+      var words = clean(text).split(' '), lines = [], cur = '';
+      words.forEach(function (w) {
+        var t = cur ? cur + ' ' + w : w;
+        if (width(t, size) <= maxW) cur = t;
+        else { if (cur) lines.push(cur); cur = w; }
+      });
+      if (cur) lines.push(cur);
+      return lines;
+    }
+    // Two lines max in a box; returns true if cut
+    function fit2(page, text, x, top1, top2, maxW, size, oneTop) {
+      text = clean(text); if (!text) return false;
+      if (width(text, size) <= maxW) { page.drawText(text, { x: x, y: Y(oneTop || top2), size: size, font: font, color: INK }); return false; }
+      var s = size, lines;
+      for (; s >= 5.5; s -= 0.25) { lines = wrap(text, maxW, s); if (lines.length <= 2) break; }
+      lines = wrap(text, maxW, Math.max(s, 5.5));
+      var cut = lines.length > 2;
+      var l2 = lines.slice(1).join(' ');
+      page.drawText(lines[0], { x: x, y: Y(top1), size: Math.max(s, 5.5), font: font, color: INK });
+      if (l2) fit(page, l2, x, top2, maxW, Math.max(s, 5.5), 5.5);
+      return cut;
+    }
+    function check(page, x0, top) {
+      // Checkbox glyph is about 6.5pt wide; center the mark in it
+      var cx = x0 + 3.25, cy = Y(top + 3.9);
+      page.drawLine({ start: { x: cx - 2.6, y: cy + 0.2 }, end: { x: cx - 0.7, y: cy - 2.1 }, thickness: 1.3, color: INK });
+      page.drawLine({ start: { x: cx - 0.7, y: cy - 2.1 }, end: { x: cx + 3.4, y: cy + 3.3 }, thickness: 1.3, color: INK });
+    }
 
-        function updateActionField(id, field, value) {
-            const action = actionsState.find(a => a.id === id);
-            if (action) {
-                action[field] = value;
-                saveData();
-            }
-        }
-        
-        function renderActions() {
-            const container = document.getElementById('action-list-container');
-            container.innerHTML = '';
-            if (actionsState.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:14px; font-size:0.75rem; color:#94a3b8; border:1px dashed #cbd5e1; border-radius:6px;">No deficiencies logged.</div>`;
-                return;
-            }
+    // Header
+    var H = F.header;
+    fit(p1, val('meta-store'), H.store.x, H.store.top, H.store.w, 8);
+    fit(p1, usDate(val('meta-date')), H.date.x, H.date.top, H.date.w, 8);
+    fit(p1, val('meta-leader'), H.leader.x, H.leader.top, H.leader.w, 8);
+    fit(p1, val('meta-time'), H.winStart.x, H.winStart.top, H.winStart.w, 7.5);
+    fit(p1, val('meta-time-end'), H.winEnd.x, H.winEnd.top, H.winEnd.w, 7.5);
+    fit(p1, val('meta-zm'), H.zm.x, H.zm.top, H.zm.w, 8);
+    fit(p1, val('meta-shift'), H.shift.x, H.shift.top, H.shift.w, 8);
 
-            actionsState.forEach(action => {
-                const card = document.createElement('div');
-                card.className = 'action-card';
-                card.id = action.id;
+    // A. KNOW
+    F.know.forEach(function (pos, i) { if ($('know-' + (i + 1)).checked) check(p1, pos[0], pos[1]); });
+    var notes = clean(val('know-notes'));
+    if (notes) {
+      var nl = wrap(notes, F.knownNotes.line1.w, 7.5);
+      p1.drawText(nl[0], { x: F.knownNotes.line1.x, y: Y(F.knownNotes.line1.top), size: 7.5, font: font, color: INK });
+      var rest = notes.slice(nl[0].length).trim();
+      if (rest && fit(p1, rest, F.knownNotes.line2.x, F.knownNotes.line2.top, F.knownNotes.line2.w, 7.5, 6)) overflow.notes = true;
+    }
 
-                const top = document.createElement('div');
-                top.className = 'action-card-top';
-                top.innerHTML = `<span>Deficiency Item</span>`;
+    // B. WALK
+    for (var i = 1; i <= N_AREAS; i++) {
+      var r = rating(i); if (!r) continue;
+      if (i <= 6) check(p1, F.walkX[r], F.walkTops[i - 1]);
+      else check(p2, F.walkX[r], F.walk7Top);
+    }
 
-                const removeBtn = document.createElement('button');
-                removeBtn.className = 'btn-remove';
-                removeBtn.innerHTML = '&times;';
-                removeBtn.addEventListener('click', () => removeActionRow(action.id));
-                
-                top.appendChild(removeBtn);
-                card.appendChild(top);
+    // C. ACT & VERIFY
+    var C = F.c, items = collectItems();
+    items.forEach(function (it, n) {
+      if (n >= C.rows) { overflow.items.push(it); return; }
+      var top = C.rowTop + C.rowH * n, l1 = top + 7.6, l2 = top + 14.6, one = top + 11.6;
+      var label = (it.tag ? '[' + it.tag + '] ' : '') + (it.title === 'Additional' ? '' : it.title + ': ') + (it.issue || '');
+      var cut = fit2(p2, label, C.issue[0], l1, l2, C.issue[1], 7, one);
+      cut = fit2(p2, it.owner, C.owner[0], l1, l2, C.owner[1], 7, one) || cut;
+      cut = fit2(p2, it.due, C.due[0], l1, l2, C.due[1], 7, one) || cut;
+      cut = fit2(p2, it.verify, C.verify[0], l1, l2, C.verify[1], 7, one) || cut;
+      if (cut) overflow.cut.push(it);
+      if (it.esc === 'Y') check(p2, C.yes, top + C.boxDy);
+      if (it.esc === 'N') check(p2, C.no, top + C.boxDy);
+    });
 
-                const issueInput = document.createElement('input');
-                issueInput.type = 'text';
-                issueInput.value = action.issue;
-                issueInput.placeholder = "Issue / Action Required";
-                issueInput.style.marginBottom = '6px';
-                issueInput.addEventListener('input', (e) => updateActionField(action.id, 'issue', e.target.value));
-                card.appendChild(issueInput);
+    // D. Summary
+    var D = F.d;
+    if (D.overall[radio('d_overall')] !== undefined) check(p2, D.overall[radio('d_overall')], D.overallTop);
+    if (D.zm[radio('d_zm')] !== undefined) check(p2, D.zm[radio('d_zm')], D.zmTop);
+    if (D.carry[radio('d_carry')] !== undefined) check(p2, D.carry[radio('d_carry')], D.carryTop);
+    if (val('d-priority') && fit2(p2, val('d-priority'), D.priority.x, D.priority.top1, D.priority.top, D.priority.w, 7.5)) overflow.priority = true;
 
-                const grid = document.createElement('div');
-                grid.className = 'form-grid-2';
-                grid.innerHTML = `
-                    <div><input type="text" value="${action.owner}" placeholder="Owner" oninput="updateActionField('${action.id}', 'owner', this.value)"></div>
-                    <div><input type="text" value="${action.due}" placeholder="Due / Suspense" oninput="updateActionField('${action.id}', 'due', this.value)"></div>
-                `;
-                card.appendChild(grid);
-                container.appendChild(card);
-            });
-        }
-        
-        // --- Data & Export ---
-        function saveData() {
-            try {
-                const state = {
-                    meta: {
-                        store: document.getElementById('meta-store').value,
-                        leader: document.getElementById('meta-leader').value,
-                        date: document.getElementById('meta-date').value,
-                        time: document.getElementById('meta-time').value,
-                    },
-                    ratings: {},
-                    actions: actionsState
-                };
-                for (let i = 1; i <= 6; i++) {
-                    const r = document.querySelector(`input[name="area_${i}"]:checked`);
-                    if (r) state.ratings[i] = r.value;
-                }
-                localStorage.setItem('SD_WALK_STATE', JSON.stringify(state));
-            } catch (e) { console.error("Could not save state.", e); }
-        }
+    // Signature + date/time
+    if (sigImg) {
+      var sc = Math.min(D.sig.w / sigImg.width, D.sig.h / sigImg.height);
+      p2.drawImage(sigImg, { x: D.sig.x, y: Y(D.sig.bottomTop), width: sigImg.width * sc, height: sigImg.height * sc });
+    }
+    var now = new Date();
+    var stamp = pad(now.getMonth() + 1) + '/' + pad(now.getDate()) + '/' + now.getFullYear() + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+    fit(p2, stamp, D.sigDate.x, D.sigDate.top, D.sigDate.w, 7.5);
 
-        function loadData() {
-            try {
-                const raw = localStorage.getItem('SD_WALK_STATE');
-                if (!raw) { renderActions(); return; }
-                const state = JSON.parse(raw);
+    // Continuation page for anything that did not fit on the form
+    if (overflow.items.length || overflow.cut.length || overflow.notes || overflow.priority) {
+      p2.drawText('Continued on page 3.', { x: 76, y: Y(319.5), size: 6.5, font: bold, color: INK });
+      addContinuation(pdf, PL, font, bold, INK, items, overflow);
+    }
 
-                document.getElementById('meta-store').value = state.meta.store || '';
-                document.getElementById('meta-leader').value = state.meta.leader || '';
-                if(state.meta.date) document.getElementById('meta-date').value = state.meta.date;
-                if(state.meta.time) document.getElementById('meta-time').value = state.meta.time;
+    pdf.setTitle('Store Readiness Walk - ' + (val('meta-store') || 'Store') + ' - ' + usDate(val('meta-date')));
+    pdf.setSubject('Store Director Daily Operational Readiness Walk');
+    pdf.setCreator('Carolina Zone Readiness Walk');
+    return pdf.save();
+  }
 
-                for (const areaId in state.ratings) {
-                    const r = document.querySelector(`input[name="area_${areaId}"][value="${state.ratings[areaId]}"]`);
-                    if (r) {
-                        r.checked = true;
-                        setRating(areaId, state.ratings[areaId], '');
-                    }
-                }
-                actionsState = state.actions || [];
-                renderActions();
-            } catch (e) { console.error("Could not load state.", e); actionsState = []; renderActions(); }
-        }
+  function addContinuation(pdf, PL, font, bold, INK, items, overflow) {
+    var page = pdf.addPage([612, 792]), M = 76, W = 612 - 2 * M, y = 792 - 72;
+    var NAVY = PL.rgb(0.12, 0.23, 0.54), MUTED = PL.rgb(0.28, 0.33, 0.41);
+    function clean(s) {
+      s = String(s || '').replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim(); var out = '';
+      for (var i = 0; i < s.length; i++) { try { font.widthOfTextAtSize(s[i], 10); out += s[i]; } catch (e) { out += '?'; } }
+      return out;
+    }
+    function para(text, size, f, color, indent) {
+      var words = clean(text).split(' '), line = '', maxW = W - (indent || 0);
+      function flush() {
+        if (!line) return;
+        if (y < 72) { page = pdf.addPage([612, 792]); y = 792 - 72; }
+        page.drawText(line, { x: M + (indent || 0), y: y, size: size, font: f || font, color: color || INK }); y -= size * 1.45; line = '';
+      }
+      words.forEach(function (w) { var t = line ? line + ' ' + w : w; if ((f || font).widthOfTextAtSize(t, size) > maxW && line) { flush(); line = w; } else line = t; });
+      flush();
+    }
+    para('Store Director Daily Operational Readiness Walk — Continuation', 13, bold, NAVY);
+    y -= 2;
+    para('Store: ' + val('meta-store') + '  |  Date: ' + usDate(val('meta-date')) + '  |  Store Director / Leader: ' + val('meta-leader'), 8.5, font, MUTED);
+    y -= 8;
+    if (overflow.notes) {
+      para('A. Known Concerns / Operational Focus for Today (full text)', 9.5, bold, NAVY);
+      para(val('know-notes'), 8.5); y -= 6;
+    }
+    var list = overflow.cut.concat(overflow.items);
+    if (list.length) {
+      para('C. ACT & VERIFY — Exception Corrective Action Log (continued / full text)', 9.5, bold, NAVY);
+      list.forEach(function (it) {
+        var n = items.indexOf(it) + 1;
+        para('Item ' + n + '. ' + (it.tag ? '[' + it.tag + '] ' : '') + it.title + ': ' + (it.issue || '(no detail entered)'), 8.5, bold);
+        para('Assigned Owner: ' + (it.owner || '-') + '  |  Target Due: ' + (it.due || '-') + '  |  Verification Sign-Off: ' + (it.verify || '-') +
+             '  |  Escalated: ' + (it.esc === 'Y' ? 'Yes' : it.esc === 'N' ? 'No' : '-'), 8, font, MUTED, 12);
+        y -= 4;
+      });
+      y -= 4;
+    }
+    if (overflow.priority) {
+      para('D. Top Priority / Critical Focus (full text)', 9.5, bold, NAVY);
+      para(val('d-priority'), 8.5);
+    }
+  }
 
-        function exportWalk() {
-            saveData();
-            const canPrint = typeof window.print === 'function';
-            if (navigator.userAgent.includes("iPhone") || navigator.userAgent.includes("iPad")) {
-                 alert("On iPhone/iPad, printing might be blocked.\n\nIf the print dialog doesn't appear, please use the 'Copy Summary' button and paste the report into an email.");
-            }
-            setTimeout(() => {
-                try {
-                    window.print();
-                } catch(e) {
-                    alert("Printing is blocked in this view. Please try the 'Copy Summary' button instead.");
-                }
-            }, 250);
-        }
+  // ---------------- Save as PDF flow ----------------
+  var ready = { blob: null, name: '', url: '' };
+  function savePdf() {
+    save();
+    if (!val('meta-time-end')) {
+      var now = new Date(); $('meta-time-end').value = pad(now.getHours()) + ':' + pad(now.getMinutes()); save();
+    }
+    var btn = $('btn-pdf'); btn.disabled = true; btn.textContent = 'Building…';
+    fillPdf().then(function (bytes) {
+      if (ready.url) URL.revokeObjectURL(ready.url);
+      ready.name = fileStem() + '.pdf';
+      ready.blob = new Blob([bytes], { type: 'application/pdf' });
+      ready.url = URL.createObjectURL(ready.blob);
+      $('pdf-name').textContent = ready.name;
+      var canShareFile = false;
+      try { canShareFile = isMobile && !!navigator.canShare && navigator.canShare({ files: [new File([ready.blob], ready.name, { type: 'application/pdf' })] }); } catch (e) {}
+      ready.share = canShareFile;
+      $('btn-pdf-share').textContent = canShareFile ? 'Share / Save PDF' : 'Download PDF';
+      $('pdf-help').textContent = canShareFile
+        ? 'Tap Share / Save PDF, then choose Save to Files, Mail, Outlook, or Teams.'
+        : 'Download the filled-out form, or view it first.';
+      $('pdf-modal').classList.add('open');
+    }).catch(function (err) {
+      toast(navigator.onLine === false
+        ? 'Couldn\'t load the blank form offline. Open the app once with signal, then try again.'
+        : 'Couldn\'t build the PDF. Please try again.');
+      if (window.console) console.error(err);
+    }).then(function () { btn.disabled = false; btn.textContent = 'Save as PDF'; });
+  }
+  function downloadPdf() {
+    var a = document.createElement('a');
+    a.href = ready.url; a.download = ready.name; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    $('pdf-modal').classList.remove('open');
+    toast('PDF saved: ' + ready.name);
+  }
+  function sharePdf() {
+    if (!ready.blob) return;
+    if (!ready.share) { downloadPdf(); return; }
+    var file = new File([ready.blob], ready.name, { type: 'application/pdf' });
+    navigator.share({ files: [file], title: ready.name }).then(function () {
+      $('pdf-modal').classList.remove('open');
+    }, function (err) {
+      if (err && err.name === 'AbortError') return;
+      downloadPdf();
+    });
+  }
+  function viewPdf() {
+    if (!ready.url) return;
+    var w = window.open(ready.url, '_blank');
+    if (!w) window.location.href = ready.url;
+  }
 
-        function buildReportText() {
-            saveData();
-            let text = `STORE READINESS WALK SUMMARY\n`;
-            text += `Store: ${document.getElementById('meta-store').value}\n`;
-            text += `Leader: ${document.getElementById('meta-leader').value}\n`;
-            text += `Date: ${document.getElementById('meta-date').value} at ${document.getElementById('meta-time').value}\n\n`;
-            text += `--- READINESS STATUS ---\n`;
-            for (let i = 1; i <= 6; i++) {
-                const r = document.querySelector(`input[name="area_${i}"]:checked`);
-                const name = document.querySelector(`#row-${i} .walk-name`).textContent;
-                const label = !r ? 'Not Rated' : (r.value === 'A' ? 'Acceptable' : r.value === 'AR' ? 'Action Required' : 'Immediate');
-                text += `${name}: ${label}\n`;
-            }
-            if (actionsState.length > 0) {
-                text += `\n--- CORRECTIVE ACTIONS ---\n`;
-                actionsState.forEach((a, i) => {
-                    text += `${i+1}. Issue: ${a.issue}\n   Owner: ${a.owner}\n   Due: ${a.due}\n\n`;
-                });
-            } else {
-                text += `\nNo corrective actions were logged.\n`;
-            }
-            return text;
-        }
+  // ---------------- Wire up ----------------
+  document.addEventListener('input', function (e) { if (e.target.hasAttribute && e.target.hasAttribute('data-save')) save(); });
+  document.addEventListener('change', function (e) { if (e.target.type === 'radio' || (e.target.hasAttribute && e.target.hasAttribute('data-save'))) save(); });
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest && e.target.closest('[data-clear]');
+    if (c) clearCard(c.getAttribute('data-clear'));
+  });
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') save(); });
+  window.addEventListener('pagehide', save);
 
-        function emailReport() {
-            const text = buildReportText();
-            const store = document.getElementById('meta-store').value || 'Store';
-            const date = document.getElementById('meta-date').value || '';
-            const subject = `Store Readiness Walk - ${store}${date ? ' - ' + date : ''}`;
-            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
-        }
+  $('btn-add').addEventListener('click', addExtra);
+  $('btn-copy').addEventListener('click', copyReport);
+  $('btn-email').addEventListener('click', emailReport);
+  $('btn-pdf').addEventListener('click', savePdf);
+  $('btn-pdf-share').addEventListener('click', sharePdf);
+  $('btn-pdf-view').addEventListener('click', viewPdf);
+  $('btn-pdf-close').addEventListener('click', function () { $('pdf-modal').classList.remove('open'); });
+  $('btn-sig-clear').addEventListener('click', function () { sigClear(); save(); });
+  $('btn-new').addEventListener('click', function () {
+    if (confirm('Start a new walk? This clears today\'s ratings, action items, and signature. Save a PDF first if you need a record.')) resetAll();
+  });
+  $('btn-close-modal').addEventListener('click', function () { $('copy-modal').classList.remove('open'); });
+  $('btn-share-text').addEventListener('click', function () {
+    navigator.share({ title: 'Store Readiness Walk', text: $('copy-text').value }).catch(function () {});
+  });
 
-        function copyReportText() {
-            const text = buildReportText();
-            try {
-                navigator.clipboard.writeText(text).then(() => {
-                    alert('Report copied to clipboard!');
-                }, () => { throw new Error(); });
-            } catch (e) {
-                const ta = document.createElement('textarea');
-                ta.style.position = 'fixed'; ta.style.left = '-9999px';
-                ta.value = text;
-                document.body.appendChild(ta);
-                ta.select();
-                try {
-                    document.execCommand('copy');
-                    alert('Report copied to clipboard!');
-                } catch (err) {
-                    alert('Could not copy text. Please manually select and copy the report.');
-                }
-                document.body.removeChild(ta);
-            }
-        }    </script>
+  if (!load()) stampNow();
+  if (!val('meta-date')) stampNow();
+  sigSize();
+  getTemplate().catch(function () {}); // warm up so Save as PDF is quick
+
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  }
+})();
+
+</script>
 </body>
 </html>
