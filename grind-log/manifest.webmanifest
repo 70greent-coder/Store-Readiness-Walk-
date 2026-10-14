@@ -1,6 +1,6 @@
 {
-  "name": "Carolina Zone – DeCA Ground Beef Tracking App",
-  "short_name": "DeCA Beef Log",
+  "name": "Grind Log – Carolina Zone",
+  "short_name": "Grind Log",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
