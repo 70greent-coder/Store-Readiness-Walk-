@@ -270,7 +270,7 @@
         </ul>
       </details>
     </div>
-    <div class="ver">Version 2.6 · Carolina Zone · works offline</div>
+    <div class="ver">Version 2.7 · Carolina Zone · works offline</div>
   </section>
 </main>
 
@@ -1367,7 +1367,7 @@ function printLog(log) {
         ${slice.map(r => `<tr><td>${esc(r.time)}</td><td>${esc(r.mfr)}</td><td>${(r.code || '').split('<br>').map(esc).join('<br>')}</td><td>${esc(r.pack)}</td><td>${esc(r.est)}</td><td>${esc(r.sanTime)}</td><td>${esc(r.sanDate)}</td><td>${esc(r.initials)}</td><td style="text-align:left">${esc(r.comments)}</td></tr>`).join('')}
       </table>
       ${p === pages - 1 && log.comments ? `<div class="f-line" style="margin-top:6px"><span class="lab">Comments:</span><span class="val">${esc(log.comments)}</span></div>` : ''}
-      <div class="f-foot"><span>DeCA Form 40-337, June 27, 2019 — app-generated reproduction; verify against official form.</span><span>Page ${p + 1} of ${pages}</span></div>
+      <div class="f-foot"><span>DeCA Form 40-337, June 27, 2019</span><span>Page ${p + 1} of ${pages}</span></div>
     </div>`;
   }
   document.getElementById('printArea').innerHTML = html;
@@ -1418,7 +1418,7 @@ function buildPdf(log) {
     });
     if (p === pages - 1 && log.comments) { y += 14; field('Comments:', log.comments, M, M + TW, y); }
     y += 14; doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
-    doc.text('DeCA Form 40-337, June 27, 2019 — app-generated reproduction; verify against official form.', M, y);
+    doc.text('DeCA Form 40-337, June 27, 2019', M, y);
     doc.text('Page ' + (p + 1) + ' of ' + pages, M + TW, y, { align: 'right' });
   }
   return doc;
